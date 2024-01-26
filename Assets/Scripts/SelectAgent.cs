@@ -18,15 +18,18 @@ public class SelectAgent : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                if (_agentSelected != null && _agentSelected != hit.transform.gameObject)
+                if ((_agentSelected != hit.transform.gameObject) && (hit.transform.gameObject == _agentBlue || hit.transform.gameObject == _agentRed))
                 {
                     _agentSelected = hit.transform.gameObject;
-                    if (_agentSelected == _agentBlue || _agentSelected == _agentRed)
-                    {
-                        print("Se ha seleccionado un agente" + _agentSelected);
-                    }
+                    print("el agente seleccionado es " + _agentSelected);
+                    
+                }
+                else if (_agentSelected == hit.transform.gameObject)
+                {
+                    print("Este agente ya esta seleccionado");
                 }
             }
         }
     }
+
 }

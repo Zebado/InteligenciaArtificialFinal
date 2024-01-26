@@ -12,7 +12,7 @@ public class AgentMove : MonoBehaviour
       // - deberiamos tener un objeto padre donde almacenar el dato del personaje.
     void Update()
     {
-        if (_agentMove._agentSelected == null) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
