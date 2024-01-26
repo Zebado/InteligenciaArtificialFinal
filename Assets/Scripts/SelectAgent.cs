@@ -7,7 +7,7 @@ public class SelectAgent : MonoBehaviour
     [SerializeField] GameObject _agentBlue;
     [SerializeField] GameObject _agentRed;
     public GameObject _agentSelected;
-    //tenemos un error si seleccionamos otra cosa q no sea un agente, no se mueve, cambia la seleccion de agente
+    
     private void Update()
     {
         //este if detecta si el mouse colisiona con algun agente y detecta el agente al que colisiona
@@ -22,7 +22,6 @@ public class SelectAgent : MonoBehaviour
                 {
                     _agentSelected = hit.transform.gameObject;
                     print("el agente seleccionado es " + _agentSelected);
-                    
                 }
                 else if (_agentSelected == hit.transform.gameObject)
                 {
