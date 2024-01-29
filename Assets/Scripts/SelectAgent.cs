@@ -4,31 +4,13 @@ using UnityEngine;
 
 public class SelectAgent : MonoBehaviour
 {
-    [SerializeField] GameObject _agentBlue;
-    [SerializeField] GameObject _agentRed;
-    public GameObject _agentSelected;
+    
     
     private void Update()
     {
         //este if detecta si el mouse colisiona con algun agente y detecta el agente al que colisiona
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                if ((_agentSelected != hit.transform.gameObject) && (hit.transform.gameObject == _agentBlue || hit.transform.gameObject == _agentRed))
-                {
-                    _agentSelected = hit.transform.gameObject;
-                    print("el agente seleccionado es " + _agentSelected);
-                }
-                else if (_agentSelected == hit.transform.gameObject)
-                {
-                    print("Este agente ya esta seleccionado");
-                }
-            }
-        }
+        
     }
 
 }
