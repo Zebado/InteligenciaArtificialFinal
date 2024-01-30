@@ -6,11 +6,12 @@ public class AgentMove : MonoBehaviour
 {
     Vector3 _targetPosition = new Vector3();
     [SerializeField, Range(0, 10)] float _speed;
-    SelectAgent _agentMove;
 
     [SerializeField] GameObject _agentBlue;
     [SerializeField] GameObject _agentRed;
-    public GameObject _agentSelected;
+    [SerializeField] GameObject _agentSelected;
+    public bool _isMoving = false;
+
     private void Start()
     {
         _targetPosition = new Vector3();
@@ -35,7 +36,7 @@ public class AgentMove : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && !_isMoving)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -49,14 +50,24 @@ public class AgentMove : MonoBehaviour
     }
     public void ActiveMoveAgent(GameObject agent)
     {
+        StartCoroutine(MoveAgent(agent));
+    }
 
-        Vector3 direction = _targetPosition - agent.transform.position;
-        agent.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        agent.transform.position = Vector3.MoveTowards(this.transform.position, _targetPosition, _speed * Time.deltaTime);
-
-        if (transform.position == _targetPosition)
+    IEnumerator MoveAgent(GameObject agent)
+    {
+        _isMoving = true;
+        float ejeY = agent.transform.position.y;
+        while (Vector3.Distance(agent.transform.position, _targetPosition) > 0.1f)
         {
-            _targetPosition = Vector3.zero;
+            Vector3 direction = (_targetPosition - agent.transform.position).normalized;
+
+            agent.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+
+            Vector3 newPosition = new Vector3(agent.transform.position.x, _targetPosition.y = 0, agent.transform.position.z);
+            agent.transform.position = Vector3.MoveTowards(newPosition, _targetPosition, _speed * Time.deltaTime);
+            yield return null;
         }
+        print("ha llegado a destino");
+        _isMoving = false;
     }
 }
