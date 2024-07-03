@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentMove : MonoBehaviour
@@ -20,20 +19,8 @@ public class AgentMove : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                if ((_agentSelected != hit.transform.gameObject) && (hit.transform.gameObject == _agentBlue || hit.transform.gameObject == _agentRed))
-                {
-                    _agentSelected = hit.transform.gameObject;
-                    print("el agente seleccionado es " + _agentSelected);
-                }
-                else if (_agentSelected == hit.transform.gameObject)
-                {
-                    print("Este agente ya esta seleccionado");
-                }
-            }
+            Debug.Log("Mouse button 0 clicked");
+            AgentSelected();
         }
 
         if (Input.GetMouseButtonDown(1) && !_isMoving)
@@ -48,8 +35,27 @@ public class AgentMove : MonoBehaviour
             }
         }
     }
+    private void AgentSelected()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if ((_agentSelected != hit.transform.gameObject) && (hit.transform.gameObject == _agentBlue || hit.transform.gameObject == _agentRed))
+            {
+                _agentSelected = hit.transform.gameObject;
+                print("el agente seleccionado es " + _agentSelected.name);
+            }
+            else if (_agentSelected == hit.transform.gameObject)
+            {
+                print("Este agente ya esta seleccionado");
+            }
+        }
+    }
     public void ActiveMoveAgent(GameObject agent)
     {
+        if(agent == null) return;
+        Debug.Log("agente movete");
         StartCoroutine(MoveAgent(agent));
     }
 
@@ -67,7 +73,7 @@ public class AgentMove : MonoBehaviour
             agent.transform.position = Vector3.MoveTowards(newPosition, _targetPosition, _speed * Time.deltaTime);
             yield return null;
         }
-        print("ha llegado a destino");
+        print("el agente ah llegado a destino");
         _isMoving = false;
     }
 }
