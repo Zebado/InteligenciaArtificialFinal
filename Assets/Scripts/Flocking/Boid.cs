@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum Faction { A, B }
 public class Boid : MonoBehaviour
 {
     Vector3 _velocity;
-
     [SerializeField] float _maxSpeed;
-
-    [Range(0f, 0.1f), SerializeField]
-    float _maxForce;
+    [SerializeField] Transform _agent;
+    [Range(0f, 0.1f), SerializeField] float _maxForce;
 
     void Start()
     {
@@ -31,14 +31,7 @@ public class Boid : MonoBehaviour
         {
             transform.forward = _velocity;
         }
-
-        //CheckBounds();
     }
-
-    //void CheckBounds()
-    //{
-    //    transform.position = GameManager.Instance.SetObjectBoundPosition(transform.position);
-    //}
 
     Vector3 Separation()
     {

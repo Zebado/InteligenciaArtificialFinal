@@ -1647,6 +1647,8 @@ MonoBehaviour:
   <SeparationWeight>k__BackingField: 1.5
   <AlignmentWeight>k__BackingField: 1
   <CohesionWeight>k__BackingField: 1
+  LeaderBlue: {fileID: 1371251928}
+  LeaderRed: {fileID: 1060044061}
 --- !u!4 &1680685531
 Transform:
   m_ObjectHideFlags: 0
