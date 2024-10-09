@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Faction { A, B }
+public enum Faction { Red, Blue }
 public class Boid : MonoBehaviour
 {
     Vector3 _velocity;
     [SerializeField] float _maxSpeed;
-    [SerializeField] Transform _agent;
     [Range(0f, 0.1f), SerializeField] float _maxForce;
 
+    [SerializeField] private Faction _faction;
+    public Faction FactionType => _faction;
     void Start()
     {
         BoidManager.Instance.RegisterNewBoid(this);
