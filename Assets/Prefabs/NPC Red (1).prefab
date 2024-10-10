@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1052215550178457750}
   - component: {fileID: 1052215550178457745}
   - component: {fileID: 1052215550178457744}
-  - component: {fileID: 3377352480591325132}
+  - component: {fileID: 4743113360539838847}
   m_Layer: 0
   m_Name: NPC Red (1)
   m_TagString: Untagged
@@ -99,7 +99,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3377352480591325132
+--- !u!114 &4743113360539838847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa97de49bbdb25746a5abb81d072427e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 2
-  _agent: {fileID: 0}
-  _maxForce: 0.06
+  _maxSpeed: 1
+  _maxForce: 0.1
+  _faction: 0
+  _followDistance: 5

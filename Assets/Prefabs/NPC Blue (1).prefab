@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2709336466058230860}
   - component: {fileID: 2709336466058230861}
   - component: {fileID: 2709336466058230862}
-  - component: {fileID: 2819040596110134763}
+  - component: {fileID: 1734471789844249368}
   m_Layer: 0
   m_Name: NPC Blue (1)
   m_TagString: Untagged
@@ -99,7 +99,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2819040596110134763
+--- !u!114 &1734471789844249368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa97de49bbdb25746a5abb81d072427e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 4
-  _maxForce: 0.025
+  _maxSpeed: 1
+  _maxForce: 0.1
   _faction: 1
+  _followDistance: 5

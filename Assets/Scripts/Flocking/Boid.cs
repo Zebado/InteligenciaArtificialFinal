@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum Faction { Red, Blue }
 public class Boid : MonoBehaviour
 {
@@ -12,26 +11,36 @@ public class Boid : MonoBehaviour
 
     [SerializeField] private Faction _faction;
     public Faction FactionType => _faction;
+
+    Transform _leader;
+    [SerializeField] float _followDistance = 5f;
+
     void Start()
     {
         BoidManager.Instance.RegisterNewBoid(this);
 
-        Vector3 random = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        _leader = _faction == Faction.Blue ? BoidManager.Instance.LeaderBlue : BoidManager.Instance.LeaderRed;
 
-        AddForce(random.normalized * _maxSpeed);
+        //Vector3 random = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+        //AddForce(random.normalized * _maxSpeed);
     }
 
     void Update()
     {
-        AddForce(Separation() * BoidManager.Instance.SeparationWeight +
-                 Alignment() * BoidManager.Instance.AlignmentWeight +
-                 Cohesion() * BoidManager.Instance.CohesionWeight);
+        ApplyFlocking();
 
         transform.position += _velocity * Time.deltaTime;
         if (_velocity != Vector3.zero)
         {
             transform.forward = _velocity;
         }
+    }
+
+    private void ApplyFlocking()
+    {
+        AddForce(Separation() * BoidManager.Instance.SeparationWeight +
+                 Alignment() * BoidManager.Instance.AlignmentWeight +
+                 Cohesion() * BoidManager.Instance.CohesionWeight);
     }
 
     Vector3 Separation()
@@ -104,6 +113,11 @@ public class Boid : MonoBehaviour
         //Contador para acumular cantidad de boids a promediar
         int count = 0;
 
+        if(_leader != null)
+        {
+            desired += _leader.position;
+            count++;
+        }
         foreach (Boid boid in BoidManager.Instance.AllBoids)
         {
             //Si soy este boid a chequear, ignoro y sigo la iteracion
@@ -148,5 +162,10 @@ public class Boid : MonoBehaviour
 
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, Mathf.Sqrt(BoidManager.Instance.ViewRadius));
+        if (_leader != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, _leader.position);
+        }
     }
 }

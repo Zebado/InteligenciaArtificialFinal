@@ -24,6 +24,11 @@ public class BoidManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         Instance = this;
         AllBoids = new List<Boid>();
     }
