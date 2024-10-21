@@ -27,8 +27,10 @@ public class Boid : MonoBehaviour
 
     void Update()
     {
-        ApplyFlocking();
-
+        if (Vector3.Distance(transform.position, _leader.transform.position) > _followDistance)
+            ApplyFlocking();
+        else
+            _velocity = Vector3.zero;
         transform.position += _velocity * Time.deltaTime;
         if (_velocity != Vector3.zero)
         {
@@ -113,7 +115,7 @@ public class Boid : MonoBehaviour
         //Contador para acumular cantidad de boids a promediar
         int count = 0;
 
-        if(_leader != null)
+        if (_leader != null)
         {
             desired += _leader.position;
             count++;
