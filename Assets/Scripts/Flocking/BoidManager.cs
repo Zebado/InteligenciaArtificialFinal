@@ -6,6 +6,7 @@ public class BoidManager : MonoBehaviour
 {
     public static BoidManager Instance { get; private set; }
     public List<Boid> AllBoids { get; private set; }
+
     public float ViewRadius
     {
         get

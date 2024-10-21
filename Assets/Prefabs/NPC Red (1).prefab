@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1052215550178457745}
   - component: {fileID: 1052215550178457744}
   - component: {fileID: 4743113360539838847}
+  - component: {fileID: 6941861561084958692}
   m_Layer: 0
   m_Name: NPC Red (1)
   m_TagString: Untagged
@@ -115,3 +116,18 @@ MonoBehaviour:
   _maxForce: 0.1
   _faction: 0
   _followDistance: 5
+--- !u!114 &6941861561084958692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1052215550178457746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaca36cbf1b8ab94ea3ff02b7454e2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64

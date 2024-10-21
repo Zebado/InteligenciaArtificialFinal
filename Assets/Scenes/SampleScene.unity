@@ -778,7 +778,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 39.10498
+  field of view: 52.73295
   orthographic: 0
   orthographic size: 12.19
   m_Depth: -1
@@ -804,7 +804,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.3531703, y: -0, z: -0, w: 0.9355591}
-  m_LocalPosition: {x: 0, y: 25.9, z: -23.3}
+  m_LocalPosition: {x: 8.13, y: 25.9, z: -23.3}
   m_LocalScale: {x: 0.39815384, y: 0.588312, z: 0.39815393}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -867,6 +867,7 @@ GameObject:
   - component: {fileID: 1060044064}
   - component: {fileID: 1060044063}
   - component: {fileID: 1060044066}
+  - component: {fileID: 1060044067}
   m_Layer: 0
   m_Name: Agente Red
   m_TagString: Untagged
@@ -971,6 +972,21 @@ MonoBehaviour:
   _agentRed: {fileID: 1060044060}
   _agentSelected: {fileID: 0}
   _isMoving: 0
+--- !u!114 &1060044067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060044060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaca36cbf1b8ab94ea3ff02b7454e2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1114020212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
@@ -1148,6 +1164,7 @@ GameObject:
   - component: {fileID: 1371251931}
   - component: {fileID: 1371251930}
   - component: {fileID: 1371251933}
+  - component: {fileID: 1371251934}
   m_Layer: 0
   m_Name: Agente Blue
   m_TagString: Untagged
@@ -1163,7 +1180,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1371251927}
   m_LocalRotation: {x: -0, y: 0.9999956, z: -0, w: 0.0029871757}
-  m_LocalPosition: {x: 0.63, y: 0, z: 10.36}
+  m_LocalPosition: {x: 1.35, y: 0, z: 9.81}
   m_LocalScale: {x: 2.3612, y: 2.3612, z: 2.3612}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1252,6 +1269,21 @@ MonoBehaviour:
   _agentRed: {fileID: 1060044060}
   _agentSelected: {fileID: 0}
   _isMoving: 0
+--- !u!114 &1371251934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371251927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaca36cbf1b8ab94ea3ff02b7454e2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1374373025 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}

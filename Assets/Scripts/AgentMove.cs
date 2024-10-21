@@ -10,10 +10,13 @@ public class AgentMove : MonoBehaviour
     [SerializeField] GameObject _agentRed;
     [SerializeField] GameObject _agentSelected;
     public bool _isMoving = false;
+    LOS _los;
 
     private void Start()
     {
         _targetPosition = new Vector3();
+        if (_agentSelected != null)
+            _los = _agentSelected.GetComponent<LOS>();
     }
     void Update()
     {
@@ -31,7 +34,8 @@ public class AgentMove : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 _targetPosition = hit.point;
-                ActiveMoveAgent(_agentSelected);
+                if (_los != null && _los.LineOfSight(_targetPosition))
+                    ActiveMoveAgent(_agentSelected);
             }
         }
     }
@@ -44,6 +48,7 @@ public class AgentMove : MonoBehaviour
             if ((_agentSelected != hit.transform.gameObject) && (hit.transform.gameObject == _agentBlue || hit.transform.gameObject == _agentRed))
             {
                 _agentSelected = hit.transform.gameObject;
+                _los = _agentSelected.GetComponent<LOS>();
                 print("el agente seleccionado es " + _agentSelected.name);
             }
             else if (_agentSelected == hit.transform.gameObject)
@@ -54,7 +59,7 @@ public class AgentMove : MonoBehaviour
     }
     public void ActiveMoveAgent(GameObject agent)
     {
-        if(agent == null) return;
+        if (agent == null) return;
         Debug.Log("agente movete");
         StartCoroutine(MoveAgent(agent));
     }

@@ -14,23 +14,26 @@ public class Boid : MonoBehaviour
 
     Transform _leader;
     [SerializeField] float _followDistance = 5f;
-
+    LOS _los;
     void Start()
     {
         BoidManager.Instance.RegisterNewBoid(this);
 
         _leader = _faction == Faction.Blue ? BoidManager.Instance.LeaderBlue : BoidManager.Instance.LeaderRed;
-
+        _los = GetComponent<LOS>();
         //Vector3 random = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
         //AddForce(random.normalized * _maxSpeed);
     }
 
     void Update()
     {
+        if (_los.LineOfSight(_leader.position))
+        {
         if (Vector3.Distance(transform.position, _leader.transform.position) > _followDistance)
             ApplyFlocking();
         else
             _velocity = Vector3.zero;
+        }
         transform.position += _velocity * Time.deltaTime;
         if (_velocity != Vector3.zero)
         {
