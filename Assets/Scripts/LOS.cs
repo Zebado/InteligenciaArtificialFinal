@@ -1,29 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
 
-public class LOS : MonoBehaviour
-{
-    public LayerMask WallLayerMask;
-    Vector3 _target;
-    public bool LineOfSight(Vector3 target)
+    public class LOS : MonoBehaviour
     {
-        Vector3 direction = target - transform.position;
-        float distance = Vector3.Distance(transform.position, target);
-        _target = target;
+        public LayerMask WallLayerMask;
+        Vector3 _target;
+        public bool LineOfSight(Vector3 target)
+        {
+            Vector3 direction = target - transform.position;
+            float distance = Vector3.Distance(transform.position, target);
+            _target = target;
 
-        if (Physics.Raycast(transform.position, direction.normalized, distance, WallLayerMask))
-        {
-            return false;
+            if (Physics.Raycast(transform.position, direction.normalized, distance, WallLayerMask))
+            {
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
-    private void OnDrawGizmos()
-    {
-        if (_target != Vector3.zero)
+        private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, _target);
+            if (_target != Vector3.zero)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position, _target);
+            }
         }
     }
-}
