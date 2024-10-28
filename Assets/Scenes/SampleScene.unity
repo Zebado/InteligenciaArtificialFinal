@@ -928,14 +928,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3531703, y: -0, z: -0, w: 0.9355591}
-  m_LocalPosition: {x: 8.13, y: 25.9, z: -23.3}
+  m_LocalRotation: {x: 0.3175341, y: -0.40954345, z: 0.15460129, w: 0.84115684}
+  m_LocalPosition: {x: 53.15, y: 25.9, z: 4.75}
   m_LocalScale: {x: 0.39815384, y: 0.588312, z: 0.39815393}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 41.363, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 41.363, y: -51.921, z: 0}
 --- !u!4 &974382028 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
@@ -992,6 +992,7 @@ GameObject:
   - component: {fileID: 1060044064}
   - component: {fileID: 1060044063}
   - component: {fileID: 1060044066}
+  - component: {fileID: 1060044068}
   - component: {fileID: 1060044067}
   m_Layer: 0
   m_Name: Agente Red
@@ -1112,6 +1113,19 @@ MonoBehaviour:
   WallLayerMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1060044068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060044060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36013c1006690c4ab1d861bace57df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 2142202761}
 --- !u!4 &1114020212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
@@ -1290,6 +1304,7 @@ GameObject:
   - component: {fileID: 1371251930}
   - component: {fileID: 1371251933}
   - component: {fileID: 1371251934}
+  - component: {fileID: 1371251935}
   m_Layer: 0
   m_Name: Agente Blue
   m_TagString: Untagged
@@ -1409,6 +1424,19 @@ MonoBehaviour:
   WallLayerMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1371251935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371251927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36013c1006690c4ab1d861bace57df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 2142202761}
 --- !u!4 &1374373025 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}

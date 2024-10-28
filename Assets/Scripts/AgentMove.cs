@@ -1,19 +1,24 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentMove : MonoBehaviour
 {
-    Vector3 _targetPosition = new Vector3();
+    Vector3 _targetPosition;
     [SerializeField, Range(0, 10)] float _speed;
-
     [SerializeField] GameObject _agentBlue;
     [SerializeField] GameObject _agentRed;
     [SerializeField] GameObject _agentSelected;
+
     public bool _isMoving = false;
     LOS _los;
+    PathFinding _pathFinding;
+    List<Node> _currentPath;
+    int _currentPathIndex;
 
     private void Start()
     {
+        _pathFinding = GetComponent<PathFinding>();
         _targetPosition = new Vector3();
         if (_agentSelected != null)
             _los = _agentSelected.GetComponent<LOS>();
@@ -21,11 +26,7 @@ public class AgentMove : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Mouse button 0 clicked");
             AgentSelected();
-        }
-
         if (Input.GetMouseButtonDown(1) && !_isMoving)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -36,8 +37,47 @@ public class AgentMove : MonoBehaviour
                 _targetPosition = hit.point;
                 if (_los != null && _los.LineOfSight(_targetPosition))
                     ActiveMoveAgent(_agentSelected);
+                else
+                {
+                    _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
+                    _currentPathIndex = 0;
+                    if (_currentPath != null && _currentPath.Count > 0)
+                    {
+                        StartCoroutine(FollowPath());
+                    }
+                    else
+                    {
+                        Debug.Log("No se encontró un camino disponible al destino.");
+                    }
+                }
             }
         }
+    }
+    private IEnumerator FollowPath()
+    {
+        _isMoving = true;
+        while (_currentPathIndex < _currentPath.Count)
+        {
+            Vector3 targetPos = _currentPath[_currentPathIndex].position;
+            while (Vector3.Distance(_agentSelected.transform.position, targetPos) > 0.1f)
+            {
+                Vector3 direction = (targetPos - _agentSelected.transform.position).normalized;
+                _agentSelected.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                _agentSelected.transform.position = Vector3.MoveTowards(_agentSelected.transform.position, targetPos, _speed * Time.deltaTime);
+
+                // Si se bloquea el camino, recalcular
+                if (!_los.LineOfSight(targetPos))
+                {
+                    _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
+                    _currentPathIndex = 0;
+                    break;
+                }
+                yield return null;
+            }
+            _currentPathIndex++;
+        }
+        _isMoving = false;
+        print("El agente no puede moverse.");
     }
     private void AgentSelected()
     {

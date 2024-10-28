@@ -5,53 +5,49 @@ public class PathFinding : MonoBehaviour
 {
     public Grid grid;
 
-    public List<Node> FindhPath(Vector3 startPosition, Vector3 targetPosition)
+    public List<Node> FindPath(Vector3 startPosition, Vector3 targetPosition)
     {
         Node startNode = grid.GetNodeFromWorldPosition(startPosition);
         Node targetNode = grid.GetNodeFromWorldPosition(targetPosition);
 
-        List<Node> openSet = new List<Node>();
+        List<Node> openSet = new List<Node> { startNode };
         HashSet<Node> closedSet = new HashSet<Node>();
-
-        openSet.Add(startNode);
 
         while (openSet.Count > 0)
         {
             Node currentNode = openSet[0];
-            for (int i = 0; i < openSet.Count; i++)
+            for (int i = 1; i < openSet.Count; i++)
             {
-                if (openSet[i].FCost < currentNode.FCost || openSet[i].FCost == currentNode.FCost && openSet[i].HCost < currentNode.HCost)
-                {
+                if (openSet[i].FCost < currentNode.FCost || (openSet[i].FCost == currentNode.FCost && openSet[i].HCost < currentNode.HCost))
                     currentNode = openSet[i];
-                }
             }
+
             openSet.Remove(currentNode);
             closedSet.Add(currentNode);
 
             if (currentNode == targetNode)
-            {
                 return RetracePath(startNode, targetNode);
-            }
+
             foreach (Node neighbor in grid.GetNeighbors(currentNode))
             {
                 if (!neighbor.walkable || closedSet.Contains(neighbor))
-                {
                     continue;
-                }
 
                 Node parent = currentNode.parent != null && HasLineOfSight(currentNode.parent, neighbor) ? currentNode.parent : currentNode;
-                float newGCostToNeighbor = parent.GCost + GetDistance(parent, neighbor);
-
-                if (newGCostToNeighbor < neighbor.GCost || !openSet.Contains(neighbor))
+                if (parent == null)
                 {
-                    neighbor.GCost = newGCostToNeighbor;
+                    parent = currentNode;
+                }
+                float newGCost = parent.GCost + GetDistance(parent, neighbor);
+
+                if (newGCost < neighbor.GCost || !openSet.Contains(neighbor))
+                {
+                    neighbor.GCost = newGCost;
                     neighbor.HCost = GetDistance(neighbor, targetNode);
                     neighbor.parent = parent;
 
                     if (!openSet.Contains(neighbor))
-                    {
                         openSet.Add(neighbor);
-                    }
                 }
             }
         }
