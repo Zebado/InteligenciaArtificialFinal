@@ -10,6 +10,19 @@ public class PathFinding : MonoBehaviour
         Node startNode = grid.GetNodeFromWorldPosition(startPosition);
         Node targetNode = grid.GetNodeFromWorldPosition(targetPosition);
 
+        if (startNode == null || targetNode == null)
+        {
+            Debug.LogWarning("Nodo de inicio o destino es nulo.");
+            return null;
+        }
+        if (!startNode.walkable || !targetNode.walkable)
+        {
+            Debug.LogWarning("Nodo de inicio o destino no es transitable.");
+            return null;
+        }
+
+        Debug.Log($"Nodo de inicio: {startNode.position}, Nodo de destino: {targetNode.position}");
+
         List<Node> openSet = new List<Node> { startNode };
         HashSet<Node> closedSet = new HashSet<Node>();
 
@@ -26,7 +39,10 @@ public class PathFinding : MonoBehaviour
             closedSet.Add(currentNode);
 
             if (currentNode == targetNode)
+            {
+                Debug.Log("Camino encontrado.");
                 return RetracePath(startNode, targetNode);
+            }
 
             foreach (Node neighbor in grid.GetNeighbors(currentNode))
             {
@@ -51,6 +67,7 @@ public class PathFinding : MonoBehaviour
                 }
             }
         }
+        Debug.Log("No se encontró un camino disponible al destino.");
         return null;
     }
     private bool HasLineOfSight(Node from, Node to)

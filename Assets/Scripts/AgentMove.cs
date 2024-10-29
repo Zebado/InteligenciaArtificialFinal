@@ -36,14 +36,23 @@ public class AgentMove : MonoBehaviour
             {
                 _targetPosition = hit.point;
                 if (_los != null && _los.LineOfSight(_targetPosition))
+                {
+                    Debug.Log("iremos por los");
                     ActiveMoveAgent(_agentSelected);
+                }
                 else
                 {
-                    _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
+                    //currentpath es nulo.... 
+                    _currentPath = _pathFinding.FindPath(this.transform.position, _targetPosition);
                     _currentPathIndex = 0;
                     if (_currentPath != null && _currentPath.Count > 0)
                     {
+                        Debug.Log("iremos por pathfinding");
                         StartCoroutine(FollowPath());
+                    }
+                    else if(_currentPath != null || _currentPath.Count < 0)
+                    {
+                        Debug.LogError("tenemos un falso");
                     }
                     else
                     {
@@ -65,7 +74,6 @@ public class AgentMove : MonoBehaviour
                 _agentSelected.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
                 _agentSelected.transform.position = Vector3.MoveTowards(_agentSelected.transform.position, targetPos, _speed * Time.deltaTime);
 
-                // Si se bloquea el camino, recalcular
                 if (!_los.LineOfSight(targetPos))
                 {
                     _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);

@@ -431,6 +431,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Red (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -607,6 +611,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Red (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -663,6 +671,10 @@ PrefabInstance:
     - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_Name
       value: NPC Red (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_RootOrder
@@ -928,14 +940,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3175341, y: -0.40954345, z: 0.15460129, w: 0.84115684}
-  m_LocalPosition: {x: 53.15, y: 25.9, z: 4.75}
+  m_LocalRotation: {x: 0.3477907, y: 0.16267829, z: -0.061410677, w: 0.9213068}
+  m_LocalPosition: {x: -27.4, y: 25.9, z: -45}
   m_LocalScale: {x: 0.39815384, y: 0.588312, z: 0.39815393}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 41.363, y: -51.921, z: 0}
+  m_LocalEulerAnglesHint: {x: 41.363, y: 20.027, z: 0}
 --- !u!4 &974382028 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
@@ -994,6 +1006,7 @@ GameObject:
   - component: {fileID: 1060044066}
   - component: {fileID: 1060044068}
   - component: {fileID: 1060044067}
+  - component: {fileID: 1060044069}
   m_Layer: 0
   m_Name: Agente Red
   m_TagString: Untagged
@@ -1126,6 +1139,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 2142202761}
+--- !u!54 &1060044069
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060044060}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!4 &1114020212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
@@ -1141,6 +1170,10 @@ PrefabInstance:
     - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_Name
       value: NPC Red (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_RootOrder
@@ -1305,6 +1338,7 @@ GameObject:
   - component: {fileID: 1371251933}
   - component: {fileID: 1371251934}
   - component: {fileID: 1371251935}
+  - component: {fileID: 1371251936}
   m_Layer: 0
   m_Name: Agente Blue
   m_TagString: Untagged
@@ -1320,7 +1354,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1371251927}
   m_LocalRotation: {x: -0, y: 0.9999956, z: -0, w: 0.0029871757}
-  m_LocalPosition: {x: 1.38, y: 0, z: 10.06}
+  m_LocalPosition: {x: -17, y: 0, z: -20.6}
   m_LocalScale: {x: 2.3612, y: 2.3612, z: 2.3612}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1437,6 +1471,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 2142202761}
+--- !u!54 &1371251936
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371251927}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!4 &1374373025 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}
@@ -1530,7 +1580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1545589755
 Transform:
   m_ObjectHideFlags: 0
@@ -1562,6 +1612,10 @@ PrefabInstance:
     - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_Name
       value: NPC Red (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1052215550178457746, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1052215550178457747, guid: 3d0bad2d847f458428730cbc11159fdc, type: 3}
       propertyPath: m_RootOrder
@@ -2325,7 +2379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridWorldSize: {x: 100, y: 100}
-  nodeSize: 3
+  nodeSize: 5
   wallMask:
     serializedVersion: 2
     m_Bits: 64
