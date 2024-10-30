@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36013c1006690c4ab1d861bace57df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 2142202761}
+  grid: {fileID: 0}
 --- !u!4 &77214202
 Transform:
   m_ObjectHideFlags: 0
@@ -1138,7 +1138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36013c1006690c4ab1d861bace57df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 2142202761}
+  grid: {fileID: 0}
 --- !u!54 &1060044069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1337,7 +1337,6 @@ GameObject:
   - component: {fileID: 1371251930}
   - component: {fileID: 1371251933}
   - component: {fileID: 1371251934}
-  - component: {fileID: 1371251935}
   - component: {fileID: 1371251936}
   m_Layer: 0
   m_Name: Agente Blue
@@ -1458,19 +1457,6 @@ MonoBehaviour:
   WallLayerMask:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &1371251935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371251927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c36013c1006690c4ab1d861bace57df3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid: {fileID: 2142202761}
 --- !u!54 &1371251936
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2375,14 +2361,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2142202756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14676438a2e34f44f933f2bffab3c8a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 27ba7226096a39d46b8870d6a399f99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridWorldSize: {x: 100, y: 100}
-  nodeSize: 5
-  wallMask:
-    serializedVersion: 2
-    m_Bits: 64
+  _neighbors: []
+  _cost: 0
 --- !u!1001 &2709336465012106555
 PrefabInstance:
   m_ObjectHideFlags: 0

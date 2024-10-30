@@ -9,24 +9,29 @@ public class AgentMove : MonoBehaviour
     [SerializeField] GameObject _agentBlue;
     [SerializeField] GameObject _agentRed;
     [SerializeField] GameObject _agentSelected;
-
     public bool _isMoving = false;
     LOS _los;
-    PathFinding _pathFinding;
-    List<Node> _currentPath;
-    int _currentPathIndex;
+    PathFinding pathFinding;
+    LayerMask obstacleLayer;
+    Stack<Node2> path;
 
     private void Start()
     {
-        _pathFinding = GetComponent<PathFinding>();
         _targetPosition = new Vector3();
+        pathFinding = new PathFinding();
+
+        // Asignamos el LOS del agente seleccionado (si existe)
         if (_agentSelected != null)
             _los = _agentSelected.GetComponent<LOS>();
     }
+
     void Update()
     {
+        // Selecciona el agente al hacer clic izquierdo
         if (Input.GetMouseButtonDown(0))
             AgentSelected();
+
+        // Establece el destino al hacer clic derecho y empieza a moverse si no está en movimiento
         if (Input.GetMouseButtonDown(1) && !_isMoving)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -35,98 +40,114 @@ public class AgentMove : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 _targetPosition = hit.point;
+
+                // Convertimos el _targetPosition a un Node2 objetivo
+                Node2 goalNode = FindClosestNode(_targetPosition);
+
+                // Verificamos si hay línea de visión directa hacia el objetivo
                 if (_los != null && _los.LineOfSight(_targetPosition))
                 {
-                    Debug.Log("iremos por los");
-                    ActiveMoveAgent(_agentSelected);
+                    Debug.Log("Moveremos al agente directamente hacia el objetivo.");
+                    ActiveMoveAgent(_agentSelected, null);
                 }
                 else
                 {
-                    //currentpath es nulo.... 
-                    _currentPath = _pathFinding.FindPath(this.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
-                    if (_currentPath != null && _currentPath.Count > 0)
-                    {
-                        Debug.Log("iremos por pathfinding");
-                        StartCoroutine(FollowPath());
-                    }
-                    else if(_currentPath != null || _currentPath.Count < 0)
-                    {
-                        Debug.LogError("tenemos un falso");
-                    }
-                    else
-                    {
-                        Debug.Log("No se encontró un camino disponible al destino.");
-                    }
+                    Debug.Log("Usaremos ThetaStar para calcular el camino.");
+                    // Calculamos el camino usando ThetaStar si no hay línea de visión
+                    path = pathFinding.ThetaStar(_agentSelected.GetComponent<Node2>(), goalNode, obstacleLayer);
+                    ActiveMoveAgent(_agentSelected, path);
                 }
             }
         }
     }
-    private IEnumerator FollowPath()
-    {
-        _isMoving = true;
-        while (_currentPathIndex < _currentPath.Count)
-        {
-            Vector3 targetPos = _currentPath[_currentPathIndex].position;
-            while (Vector3.Distance(_agentSelected.transform.position, targetPos) > 0.1f)
-            {
-                Vector3 direction = (targetPos - _agentSelected.transform.position).normalized;
-                _agentSelected.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                _agentSelected.transform.position = Vector3.MoveTowards(_agentSelected.transform.position, targetPos, _speed * Time.deltaTime);
 
-                if (!_los.LineOfSight(targetPos))
-                {
-                    _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
-                    break;
-                }
-                yield return null;
-            }
-            _currentPathIndex++;
-        }
-        _isMoving = false;
-        print("El agente no puede moverse.");
-    }
     private void AgentSelected()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
+            // Cambiamos el agente seleccionado al hacer clic en otro agente
             if ((_agentSelected != hit.transform.gameObject) && (hit.transform.gameObject == _agentBlue || hit.transform.gameObject == _agentRed))
             {
                 _agentSelected = hit.transform.gameObject;
                 _los = _agentSelected.GetComponent<LOS>();
-                print("el agente seleccionado es " + _agentSelected.name);
+                Debug.Log("Agente seleccionado: " + _agentSelected.name);
             }
             else if (_agentSelected == hit.transform.gameObject)
             {
-                print("Este agente ya esta seleccionado");
+                Debug.Log("Este agente ya está seleccionado.");
             }
         }
     }
-    public void ActiveMoveAgent(GameObject agent)
+
+    // Método para activar el movimiento del agente
+    public void ActiveMoveAgent(GameObject agent, Stack<Node2> path)
     {
         if (agent == null) return;
-        Debug.Log("agente movete");
-        StartCoroutine(MoveAgent(agent));
+        Debug.Log("Iniciando el movimiento del agente.");
+        StartCoroutine(MoveAgent(agent, path));
     }
 
-    IEnumerator MoveAgent(GameObject agent)
+    IEnumerator MoveAgent(GameObject agent, Stack<Node2> path)
     {
         _isMoving = true;
         float ejeY = agent.transform.position.y;
+
+        // Si hay un camino calculado, sigue cada nodo del camino
         while (Vector3.Distance(agent.transform.position, _targetPosition) > 0.1f)
         {
-            Vector3 direction = (_targetPosition - agent.transform.position).normalized;
+            Vector3 nextPosition;
+            if (path != null && path.Count > 0)
+            {
+                Node2 nextNode = path.Pop();
+                nextPosition = nextNode.transform.position;
+            }
+            else
+            {
+                // Si no hay un camino, mueve directamente al objetivo
+                nextPosition = _targetPosition;
+            }
 
+            // Si hay una obstrucción, recalculamos el camino desde la posición actual
+            if (!_los.LineOfSight(nextPosition))
+            {
+                Debug.Log("Obstrucción detectada, recalculando el camino.");
+                Node2 current = agent.GetComponent<Node2>();
+                Node2 goalNode = FindClosestNode(_targetPosition);
+                path = pathFinding.ThetaStar(current, goalNode, obstacleLayer);
+                continue;
+            }
+
+            Vector3 direction = (nextPosition - agent.transform.position).normalized;
             agent.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
             Vector3 newPosition = new Vector3(agent.transform.position.x, _targetPosition.y = 0, agent.transform.position.z);
-            agent.transform.position = Vector3.MoveTowards(newPosition, _targetPosition, _speed * Time.deltaTime);
+            agent.transform.position = Vector3.MoveTowards(newPosition, nextPosition, _speed * Time.deltaTime);
             yield return null;
         }
-        print("el agente ah llegado a destino");
+
+        Debug.Log("El agente ha llegado al objetivo.");
         _isMoving = false;
+    }
+
+    // Método para encontrar el nodo más cercano al destino
+    private Node2 FindClosestNode(Vector3 targetPosition)
+    {
+        Node2[] allNodes = FindObjectsOfType<Node2>();
+        Node2 closestNode = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Node2 node in allNodes)
+        {
+            float distance = Vector3.Distance(node.transform.position, targetPosition);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestNode = node;
+            }
+        }
+
+        return closestNode;
     }
 }
