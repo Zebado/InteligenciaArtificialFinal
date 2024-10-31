@@ -11,23 +11,21 @@ public class Boid : MonoBehaviour
 
     [SerializeField] private Faction _faction;
     public Faction FactionType => _faction;
-
+    [SerializeField] LayerMask _obstacleLayer;
     Transform _leader;
     [SerializeField] float _followDistance = 5f;
-    LOS _los;
     void Start()
     {
         BoidManager.Instance.RegisterNewBoid(this);
 
         _leader = _faction == Faction.Blue ? BoidManager.Instance.LeaderBlue : BoidManager.Instance.LeaderRed;
-        _los = GetComponent<LOS>();
         //Vector3 random = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
         //AddForce(random.normalized * _maxSpeed);
     }
 
     void Update()
     {
-        if (_los.LineOfSight(_leader.position))
+        if (LOS.InLineOfSight(this.transform.position, _leader.position, _obstacleLayer))
         {
         if (Vector3.Distance(transform.position, _leader.transform.position) > _followDistance)
             ApplyFlocking();

@@ -1004,7 +1004,6 @@ GameObject:
   - component: {fileID: 1060044064}
   - component: {fileID: 1060044063}
   - component: {fileID: 1060044066}
-  - component: {fileID: 1060044068}
   - component: {fileID: 1060044067}
   - component: {fileID: 1060044069}
   m_Layer: 0
@@ -1123,22 +1122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaca36cbf1b8ab94ea3ff02b7454e2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
---- !u!114 &1060044068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060044060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c36013c1006690c4ab1d861bace57df3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid: {fileID: 0}
 --- !u!54 &1060044069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1454,9 +1437,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaca36cbf1b8ab94ea3ff02b7454e2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!54 &1371251936
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2346,7 +2326,7 @@ Transform:
   m_GameObject: {fileID: 2142202756}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -2.9936996, z: -0.032215}
-  m_LocalScale: {x: 100, y: 1.5786241, z: 100}
+  m_LocalScale: {x: 117.68, y: 1.8577249, z: 117.68}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

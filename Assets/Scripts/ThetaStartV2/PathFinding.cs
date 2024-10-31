@@ -4,30 +4,30 @@ using UnityEngine;
 
 public class PathFinding
 {
-    float Heuristic(Node2 currentNode, Node2 goalNode)
+    float Heuristic(Node currentNode, Node goalNode)
     {
         return Mathf.Abs(currentNode.transform.position.x - goalNode.transform.position.x) +
             Mathf.Abs(currentNode.transform.position.z - goalNode.transform.position.z);
     }
 
-    public Stack<Node2> ThetaStar(Node2 startingNode, Node2 goalNode, LayerMask obstacleLayer)
+    public Stack<Node> ThetaStar(Node startingNode, Node goalNode, LayerMask obstacleLayer)
     {
-        Stack<Node2> path = new Stack<Node2>();
+        Stack<Node> path = new Stack<Node>();
 
         if (startingNode == null || goalNode == null) return path;
 
-        PriorityQueue<Node2> frontier = new PriorityQueue<Node2>();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.Enqueue(startingNode, 0);
 
-        Dictionary<Node2, Node2> cameFrom = new Dictionary<Node2, Node2>();
+        Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
         cameFrom.Add(startingNode, null);
 
-        Dictionary<Node2, int> costSoFar = new Dictionary<Node2, int>();
+        Dictionary<Node, int> costSoFar = new Dictionary<Node, int>();
         costSoFar.Add(startingNode, 0);
 
         while (frontier.Count > 0)
         {
-            Node2 current = frontier.Dequeue();
+            Node current = frontier.Dequeue();
 
             if (current == goalNode)
             {
@@ -70,23 +70,23 @@ public class PathFinding
         return path;
     }
 
-    public IEnumerator PaintAStar(Node2 startingNode, Node2 goalNode)
+    public IEnumerator PaintAStar(Node startingNode, Node goalNode)
     {
 
-        PriorityQueue<Node2> frontier = new PriorityQueue<Node2>();
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.Enqueue(startingNode, 0);
 
-        Dictionary<Node2, Node2> cameFrom = new Dictionary<Node2, Node2>();
+        Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
         cameFrom.Add(startingNode, null);
 
-        Dictionary<Node2, int> costSoFar = new Dictionary<Node2, int>();
+        Dictionary<Node, int> costSoFar = new Dictionary<Node, int>();
         costSoFar.Add(startingNode, 0);
 
         WaitForSeconds time = new WaitForSeconds(0.01f);
 
         while (frontier.Count > 0)
         {
-            Node2 current = frontier.Dequeue();
+            Node current = frontier.Dequeue();
 
             yield return time;
 

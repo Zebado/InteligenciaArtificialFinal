@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class NodeManager : MonoBehaviour
 {
-    public List<Node2> nodes;
+    public List<Node> nodes;
     public static NodeManager instance { get; private set; }
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
     }
-    public Node2 NodeClosetIsPosition(Vector3 position, LayerMask obstacleLayer)
+    public Node NodeClosetIsPosition(Vector3 position, LayerMask obstacleLayer)
     {
-        Node2 nodeClosest = null;
+        Node nodeClosest = null;
 
-        foreach (Node2 node in nodes)
+        foreach (Node node in nodes)
         {
             if (LOS.InLineOfSight(position, node.transform.position, obstacleLayer))
             {

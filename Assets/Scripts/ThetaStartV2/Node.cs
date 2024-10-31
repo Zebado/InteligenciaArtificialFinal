@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node2 : MonoBehaviour
+public class Node : MonoBehaviour
 {
-    [SerializeField] List<Node2> _neighbors;
+    [SerializeField] List<Node> _neighbors;
     public int _cost;
     private void Start()
     {
         _cost = 1;
     }
-    public List<Node2> GetNeighbors()
+    public List<Node> GetNeighbors()
     {
         return _neighbors;
     }
