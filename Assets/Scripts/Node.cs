@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking.Types;
 
-public class Node
+public class Node : MonoBehaviour
 {
-    public Vector3 position;
-    public bool walkable;
-    public Node parent;
 
-    public float GCost;
-    public float HCost;
+    [SerializeField] List<Node> _neighbors;
 
-    public float FCost => GCost + HCost;
+    public int _cost;
 
-    public Node(Vector3 position, bool walkable)
+    private void Start()
     {
-        this.position = position;
-        this.walkable = walkable;
-        GCost = 0;
-        HCost = 0;
-        parent = null;
+        _cost = 1;
+    }
+    public List<Node> GetNeighbors()
+    {
+        return _neighbors;
     }
 }
+

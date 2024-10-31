@@ -12,13 +12,11 @@ public class AgentMove : MonoBehaviour
 
     public bool _isMoving = false;
     LOS _los;
-    PathFinding _pathFinding;
     List<Node> _currentPath;
     int _currentPathIndex;
 
     private void Start()
     {
-        _pathFinding = GetComponent<PathFinding>();
         _targetPosition = new Vector3();
         if (_agentSelected != null)
             _los = _agentSelected.GetComponent<LOS>();
@@ -40,52 +38,8 @@ public class AgentMove : MonoBehaviour
                     Debug.Log("iremos por los");
                     ActiveMoveAgent(_agentSelected);
                 }
-                else
-                {
-                    //currentpath es nulo.... 
-                    _currentPath = _pathFinding.FindPath(this.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
-                    if (_currentPath != null && _currentPath.Count > 0)
-                    {
-                        Debug.Log("iremos por pathfinding");
-                        StartCoroutine(FollowPath());
-                    }
-                    else if(_currentPath != null || _currentPath.Count < 0)
-                    {
-                        Debug.LogError("tenemos un falso");
-                    }
-                    else
-                    {
-                        Debug.Log("No se encontró un camino disponible al destino.");
-                    }
-                }
             }
         }
-    }
-    private IEnumerator FollowPath()
-    {
-        _isMoving = true;
-        while (_currentPathIndex < _currentPath.Count)
-        {
-            Vector3 targetPos = _currentPath[_currentPathIndex].position;
-            while (Vector3.Distance(_agentSelected.transform.position, targetPos) > 0.1f)
-            {
-                Vector3 direction = (targetPos - _agentSelected.transform.position).normalized;
-                _agentSelected.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                _agentSelected.transform.position = Vector3.MoveTowards(_agentSelected.transform.position, targetPos, _speed * Time.deltaTime);
-
-                if (!_los.LineOfSight(targetPos))
-                {
-                    _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
-                    break;
-                }
-                yield return null;
-            }
-            _currentPathIndex++;
-        }
-        _isMoving = false;
-        print("El agente no puede moverse.");
     }
     private void AgentSelected()
     {
