@@ -9,6 +9,8 @@ public class Grid : MonoBehaviour
     Node[,] grid;
     int gridSizeX, gridSizeY;
 
+    bool _drawGizoms = true;
+
     public LayerMask wallMask;
     void Awake()
     {
@@ -21,6 +23,13 @@ public class Grid : MonoBehaviour
     private void OnValidate()
     {
         CreateGrid();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            _drawGizoms = !_drawGizoms;
+        }
     }
     void CreateGrid()
     {
@@ -85,6 +94,7 @@ public class Grid : MonoBehaviour
     }
     void OnDrawGizmos()
     {
+        if (!_drawGizoms) return;
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
         if (grid != null)
