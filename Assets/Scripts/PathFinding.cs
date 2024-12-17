@@ -49,11 +49,8 @@ public class PathFinding : MonoBehaviour
                 if (!neighbor.walkable || closedSet.Contains(neighbor))
                     continue;
 
+                // Verificar si el nodo actual y el vecino tienen línea de visión directa con el padre del nodo actual
                 Node parent = currentNode.parent != null && HasLineOfSight(currentNode.parent, neighbor) ? currentNode.parent : currentNode;
-                if (parent == null)
-                {
-                    parent = currentNode;
-                }
                 float newGCost = parent.GCost + GetDistance(parent, neighbor);
 
                 if (newGCost < neighbor.GCost || !openSet.Contains(neighbor))
@@ -70,12 +67,14 @@ public class PathFinding : MonoBehaviour
         Debug.Log("No se encontró un camino disponible al destino.");
         return null;
     }
+
     private bool HasLineOfSight(Node from, Node to)
     {
         Vector3 direction = to.position - from.position;
         float distance = Vector3.Distance(from.position, to.position);
         return !Physics.Raycast(from.position, direction.normalized, distance, grid.wallMask);
     }
+
     private List<Node> RetracePath(Node startNode, Node lastNode)
     {
         List<Node> path = new List<Node>();
@@ -89,6 +88,7 @@ public class PathFinding : MonoBehaviour
         path.Reverse();
         return path;
     }
+
     private float GetDistance(Node a, Node b)
     {
         int dstX = Mathf.Abs(Mathf.RoundToInt(a.position.x) - Mathf.RoundToInt(b.position.x));
@@ -99,3 +99,4 @@ public class PathFinding : MonoBehaviour
         return 14 * dstX + 10 * (dstY - dstX);
     }
 }
+

@@ -23,10 +23,12 @@ public class AgentMove : MonoBehaviour
         if (_agentSelected != null)
             _los = _agentSelected.GetComponent<LOS>();
     }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
             AgentSelected();
+
         if (Input.GetMouseButtonDown(1) && !_isMoving)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -37,22 +39,17 @@ public class AgentMove : MonoBehaviour
                 _targetPosition = hit.point;
                 if (_los != null && _los.LineOfSight(_targetPosition))
                 {
-                    Debug.Log("iremos por los");
-                    ActiveMoveAgent(_agentSelected);
+                    Debug.Log("Iremos por LOS");
+                    ActiveMoveAgent(_agentSelected, _targetPosition);
                 }
                 else
                 {
-                    //currentpath es nulo.... 
+                    Debug.Log("Iremos por pathfinding");
                     _currentPath = _pathFinding.FindPath(this.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
                     if (_currentPath != null && _currentPath.Count > 0)
                     {
-                        Debug.Log("iremos por pathfinding");
+                        _currentPathIndex = 0;
                         StartCoroutine(FollowPath());
-                    }
-                    else if(_currentPath != null || _currentPath.Count < 0)
-                    {
-                        Debug.LogError("tenemos un falso");
                     }
                     else
                     {
@@ -62,6 +59,7 @@ public class AgentMove : MonoBehaviour
             }
         }
     }
+
     private IEnumerator FollowPath()
     {
         _isMoving = true;
@@ -74,8 +72,10 @@ public class AgentMove : MonoBehaviour
                 _agentSelected.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
                 _agentSelected.transform.position = Vector3.MoveTowards(_agentSelected.transform.position, targetPos, _speed * Time.deltaTime);
 
+                // Recalcular path si se pierde la línea de visión
                 if (!_los.LineOfSight(targetPos))
                 {
+                    Debug.Log("Recalculando path...");
                     _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
                     _currentPathIndex = 0;
                     break;
@@ -85,8 +85,9 @@ public class AgentMove : MonoBehaviour
             _currentPathIndex++;
         }
         _isMoving = false;
-        print("El agente no puede moverse.");
+        Debug.Log("El agente ha llegado a su destino.");
     }
+
     private void AgentSelected()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -97,36 +98,33 @@ public class AgentMove : MonoBehaviour
             {
                 _agentSelected = hit.transform.gameObject;
                 _los = _agentSelected.GetComponent<LOS>();
-                print("el agente seleccionado es " + _agentSelected.name);
+                Debug.Log("El agente seleccionado es " + _agentSelected.name);
             }
             else if (_agentSelected == hit.transform.gameObject)
             {
-                print("Este agente ya esta seleccionado");
+                Debug.Log("Este agente ya está seleccionado.");
             }
         }
     }
-    public void ActiveMoveAgent(GameObject agent)
+
+    public void ActiveMoveAgent(GameObject agent, Vector3 target)
     {
         if (agent == null) return;
-        Debug.Log("agente movete");
-        StartCoroutine(MoveAgent(agent));
+        Debug.Log("Agente moviéndose por LOS");
+        StartCoroutine(MoveAgent(agent, target));
     }
 
-    IEnumerator MoveAgent(GameObject agent)
+    IEnumerator MoveAgent(GameObject agent, Vector3 target)
     {
         _isMoving = true;
-        float ejeY = agent.transform.position.y;
-        while (Vector3.Distance(agent.transform.position, _targetPosition) > 0.1f)
+        while (Vector3.Distance(agent.transform.position, target) > 0.1f)
         {
-            Vector3 direction = (_targetPosition - agent.transform.position).normalized;
-
+            Vector3 direction = (target - agent.transform.position).normalized;
             agent.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-
-            Vector3 newPosition = new Vector3(agent.transform.position.x, _targetPosition.y = 0, agent.transform.position.z);
-            agent.transform.position = Vector3.MoveTowards(newPosition, _targetPosition, _speed * Time.deltaTime);
+            agent.transform.position = Vector3.MoveTowards(agent.transform.position, target, _speed * Time.deltaTime);
             yield return null;
         }
-        print("el agente ah llegado a destino");
+        Debug.Log("El agente ha llegado a su destino por LOS.");
         _isMoving = false;
     }
 }

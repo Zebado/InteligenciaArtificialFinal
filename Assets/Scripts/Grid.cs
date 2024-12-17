@@ -9,6 +9,8 @@ public class Grid : MonoBehaviour
     Node[,] grid;
     int gridSizeX, gridSizeY;
 
+    bool drawGizmos = true;
+
     public LayerMask wallMask;
     void Awake()
     {
@@ -21,6 +23,13 @@ public class Grid : MonoBehaviour
     private void OnValidate()
     {
         CreateGrid();
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            drawGizmos = !drawGizmos;
+        }
     }
     void CreateGrid()
     {
@@ -85,6 +94,9 @@ public class Grid : MonoBehaviour
     }
     void OnDrawGizmos()
     {
+
+        if (!drawGizmos) return;
+
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
         if (grid != null)
@@ -108,8 +120,8 @@ public class Grid : MonoBehaviour
 
                     Gizmos.DrawLine(topLeft, topRight);
                     Gizmos.DrawLine(topRight, downRight);
-                    Gizmos.DrawLine(downRight, downLeft); 
-                    Gizmos.DrawLine(downLeft, topLeft); 
+                    Gizmos.DrawLine(downRight, downLeft);
+                    Gizmos.DrawLine(downLeft, topLeft);
                 }
             }
         }
