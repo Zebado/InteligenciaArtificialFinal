@@ -11,6 +11,12 @@ public class PathFinding : MonoBehaviour
         Node startNode = Grid.NodeFromWorldPoint(startPos);
         Node targetNode = Grid.NodeFromWorldPoint(targetPos);
 
+        if (startNode == null || targetNode == null)
+        {
+            Debug.LogWarning("ThetaStar: Nodo inicial o final no válido.");
+            return new List<Vector3>();
+        }
+
         List<Node> openSet = new List<Node>();
         HashSet<Node> closedSet = new HashSet<Node>();
         openSet.Add(startNode);
@@ -65,6 +71,12 @@ public class PathFinding : MonoBehaviour
 
     bool HasLineOfSight(Node from, Node to)
     {
+        if (from == null || to == null)
+        {
+            Debug.LogWarning("HasLineOfSight: Nodo inválido.");
+            return false;
+        }
+
         Vector3 direction = to.WorldPosition - from.WorldPosition;
         float distance = Vector3.Distance(from.WorldPosition, to.WorldPosition);
         return !Physics.Raycast(from.WorldPosition, direction.normalized, distance, Grid.UnwalkableMask);

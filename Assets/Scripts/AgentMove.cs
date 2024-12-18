@@ -10,6 +10,11 @@ public class AgentMove : MonoBehaviour
     [SerializeField] GameObject _agentRed;
     [SerializeField] GameObject _agentSelected;
 
+    [SerializeField] PathFinding _pathFinding;
+    [SerializeField] Grid _grid;
+    List<Vector3> _currentPath = new List<Vector3>();
+    int _currentPathIndex = 0;
+
     public bool _isMoving = false;
     LOS _los;
 
@@ -35,8 +40,23 @@ public class AgentMove : MonoBehaviour
 
                 if (_los != null && _los.LineOfSight(_targetPosition))
                 {
-                    Debug.Log("iremos por los");
+                    Debug.Log("Línea de visión directa. Moviendo directamente.");
+                    _currentPath.Clear();
                     ActiveMoveAgent(_agentSelected);
+                }
+                else
+                {
+                    Debug.Log("No hay línea de visión. Calculando path...");
+                    _currentPath = _pathFinding.ThetaStar(_agentSelected.transform.position, _targetPosition);
+                    if (_currentPath.Count > 0)
+                    {
+                        _currentPathIndex = 0;
+                        StartCoroutine(FollowPath(_agentSelected));
+                    }
+                    else
+                    {
+                        Debug.Log("No se encontró un camino al destino.");
+                    }
                 }
             }
         }
@@ -58,6 +78,43 @@ public class AgentMove : MonoBehaviour
                 print("Este agente ya esta seleccionado");
             }
         }
+    }
+    IEnumerator FollowPath(GameObject agent)
+    {
+        _isMoving = true;
+        while (_currentPathIndex < _currentPath.Count)
+        {
+            Vector3 nextPoint = _currentPath[_currentPathIndex];
+            while (Vector3.Distance(agent.transform.position, nextPoint) > 0.1f)
+            {
+                if (!_los.LineOfSight(nextPoint))
+                {
+                    Debug.Log("Camino obstruido. Recalculando...");
+                    _currentPath = _pathFinding.ThetaStar(agent.transform.position, _targetPosition);
+                    if (_currentPath != null && _currentPath.Count > 0)
+                    {
+                        _currentPathIndex = 0;
+                        StartCoroutine(FollowPath(_agentSelected));
+                    }
+                    else
+                    {
+                        Debug.Log("No se encontró un camino tras recalcular.");
+                        _isMoving = false;
+                        yield break;
+                    }
+                }
+
+                Vector3 direction = (nextPoint - agent.transform.position).normalized;
+                agent.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+                agent.transform.position = Vector3.MoveTowards(agent.transform.position, nextPoint, _speed * Time.deltaTime);
+                yield return null;
+            }
+
+            _currentPathIndex++;
+        }
+
+        Debug.Log("El agente ha llegado al destino.");
+        _isMoving = false;
     }
     public void ActiveMoveAgent(GameObject agent)
     {
@@ -82,5 +139,16 @@ public class AgentMove : MonoBehaviour
         }
         print("el agente ah llegado a destino");
         _isMoving = false;
+    }
+    void OnDrawGizmos()
+    {
+        if (_currentPath != null)
+        {
+            Gizmos.color = Color.cyan;
+            for (int i = 0; i < _currentPath.Count - 1; i++)
+            {
+                Gizmos.DrawLine(_currentPath[i], _currentPath[i + 1]);
+            }
+        }
     }
 }

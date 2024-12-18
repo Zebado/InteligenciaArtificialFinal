@@ -38,6 +38,12 @@ public class Grid : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
+        if (_grid == null)
+        {
+            Debug.LogError("NodeFromWorldPoint: La grilla no está inicializada.");
+            return null;
+        }
+
         float percentX = (worldPosition.x + GridWorldSize.x / 2) / GridWorldSize.x;
         float percentY = (worldPosition.z + GridWorldSize.y / 2) / GridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
@@ -72,17 +78,17 @@ public class Grid : MonoBehaviour
         return neighbours;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, 1, GridWorldSize.y));
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(GridWorldSize.x, 1, GridWorldSize.y));
 
-        if (_grid != null)
-        {
-            foreach (Node n in _grid)
-            {
-                Gizmos.color = n.IsWalkable ? Color.white : Color.red;
-                Gizmos.DrawCube(n.WorldPosition, Vector3.one * (_nodeDiameter - 0.1f));
-            }
-        }
-    }
+    //    if (_grid != null)
+    //    {
+    //        foreach (Node n in _grid)
+    //        {
+    //            Gizmos.color = n.IsWalkable ? Color.green : Color.red;
+    //            Gizmos.DrawCube(n.WorldPosition, Vector3.one * (_nodeDiameter - 0.1f));
+    //        }
+    //    }
+    //}
 }
