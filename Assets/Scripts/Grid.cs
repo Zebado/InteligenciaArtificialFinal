@@ -16,10 +16,6 @@ public class Grid : MonoBehaviour
     {
         CreateGrid();
     }
-    void Start()
-    {
-        CreateGrid();
-    }
     private void OnValidate()
     {
         CreateGrid();
@@ -51,12 +47,9 @@ public class Grid : MonoBehaviour
             }
         }
     }
-    public List<Node> GetNeighbors(Node node)
+    public List<Node> GetNeighbors(int nodeX, int nodeY)
     {
         List<Node> neighbors = new List<Node>();
-
-        int nodeX = Mathf.RoundToInt((node.position.x + gridWorldSize.x / 2) / nodeSize);
-        int nodeY = Mathf.RoundToInt((node.position.z + gridWorldSize.y / 2) / nodeSize);
 
         // Revisamos cada una de las direcciones alrededor del nodo actual (horizontal, vertical y diagonal)
         for (int x = -1; x <= 1; x++)
@@ -72,7 +65,11 @@ public class Grid : MonoBehaviour
                 // Asegurarnos de que los índices estén dentro de los límites de la cuadrícula
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    neighbors.Add(grid[checkX, checkY]);
+                    // Verificar si el nodo es caminable antes de agregarlo
+                    if (grid[checkX, checkY].walkable)
+                    {
+                        neighbors.Add(grid[checkX, checkY]);
+                    }
                 }
             }
         }
@@ -81,15 +78,22 @@ public class Grid : MonoBehaviour
     }
     public Node GetNodeFromWorldPosition(Vector3 worldPosition)
     {
+        // Calculamos el porcentaje en X y Z dentro del tamaño total de la grilla
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
 
+        // Asegurarse de que el porcentaje esté entre 0 y 1
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
+        // Convertimos el porcentaje a índices del grid, redondeando a los nodos más cercanos
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
+        // Debug para verificar si los índices son correctos
+        Debug.Log($"Convertido WorldPos: ({worldPosition.x}, {worldPosition.z}) -> Nodo: ({x}, {y})");
+
+        // Retornar el nodo correspondiente
         return grid[x, y];
     }
     void OnDrawGizmos()

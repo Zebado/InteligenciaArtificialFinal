@@ -10,21 +10,17 @@ public class PathFinding : MonoBehaviour
         Node startNode = grid.GetNodeFromWorldPosition(startPosition);
         Node targetNode = grid.GetNodeFromWorldPosition(targetPosition);
 
-        if (startNode == null || targetNode == null)
+        if (startNode == null || targetNode == null || !startNode.walkable || !targetNode.walkable)
         {
             Debug.LogWarning("Nodo de inicio o destino es nulo.");
             return null;
         }
-        if (!startNode.walkable || !targetNode.walkable)
-        {
-            Debug.LogWarning("Nodo de inicio o destino no es transitable.");
-            return null;
-        }
-
-        Debug.Log($"Nodo de inicio: {startNode.position}, Nodo de destino: {targetNode.position}");
 
         List<Node> openSet = new List<Node> { startNode };
         HashSet<Node> closedSet = new HashSet<Node>();
+
+        int startX = Mathf.RoundToInt((startNode.position.x + grid.gridWorldSize.x / 2) / grid.nodeSize);
+        int startY = Mathf.RoundToInt((startNode.position.z + grid.gridWorldSize.y / 2) / grid.nodeSize);
 
         while (openSet.Count > 0)
         {
@@ -43,17 +39,15 @@ public class PathFinding : MonoBehaviour
                 Debug.Log("Camino encontrado.");
                 return RetracePath(startNode, targetNode);
             }
+            int currentX = Mathf.RoundToInt((currentNode.position.x + grid.gridWorldSize.x / 2) / grid.nodeSize);
+            int currentY = Mathf.RoundToInt((currentNode.position.z + grid.gridWorldSize.y / 2) / grid.nodeSize);
 
-            foreach (Node neighbor in grid.GetNeighbors(currentNode))
+            foreach (Node neighbor in grid.GetNeighbors(currentX, currentY))
             {
                 if (!neighbor.walkable || closedSet.Contains(neighbor))
                     continue;
 
                 Node parent = currentNode.parent != null && HasLineOfSight(currentNode.parent, neighbor) ? currentNode.parent : currentNode;
-                if (parent == null)
-                {
-                    parent = currentNode;
-                }
                 float newGCost = parent.GCost + GetDistance(parent, neighbor);
 
                 if (newGCost < neighbor.GCost || !openSet.Contains(neighbor))
