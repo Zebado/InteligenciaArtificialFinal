@@ -12,13 +12,9 @@ public class AgentMove : MonoBehaviour
 
     public bool _isMoving = false;
     LOS _los;
-    PathFinding _pathFinding;
-    List<Node> _currentPath;
-    int _currentPathIndex;
 
     private void Start()
     {
-        _pathFinding = GetComponent<PathFinding>();
         _targetPosition = new Vector3();
         if (_agentSelected != null)
             _los = _agentSelected.GetComponent<LOS>();
@@ -42,64 +38,8 @@ public class AgentMove : MonoBehaviour
                     Debug.Log("iremos por los");
                     ActiveMoveAgent(_agentSelected);
                 }
-                else
-                {
-                    Debug.Log($"Nodo inicial: {this.transform.position}, Nodo final: {_targetPosition}");
-                    //Encontrar camino con pathfinding(Theta*).
-                    _currentPath = _pathFinding.FindPath(this.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
-
-                    if (_currentPath != null && _currentPath.Count > 0)
-                    {
-                        Debug.Log("Moviendo por pathfinding");
-                        StartCoroutine(FollowPath());
-                    }
-                    else
-                    {
-                        Debug.Log("No se encontró un camino disponible al destino.");
-                    }
-                }
             }
         }
-    }
-    private IEnumerator FollowPath()
-    {
-        _isMoving = true;
-
-        while (_currentPathIndex < _currentPath.Count)
-        {
-            Vector3 targetPos = _currentPath[_currentPathIndex].position;
-
-            while (Vector3.Distance(_agentSelected.transform.position, targetPos) > 0.1f)
-            {
-                Vector3 direction = (targetPos - _agentSelected.transform.position).normalized;
-                _agentSelected.transform.rotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-                _agentSelected.transform.position = Vector3.MoveTowards(_agentSelected.transform.position, targetPos, _speed * Time.deltaTime);
-
-                // Verificar si se perdió Line of Sight al objetivo actual.
-                if (!_los.LineOfSight(targetPos))
-                {
-                    Debug.LogWarning("Perdimos Line of Sight, recalculando camino...");
-                    _currentPath = _pathFinding.FindPath(_agentSelected.transform.position, _targetPosition);
-                    _currentPathIndex = 0;
-
-                    if (_currentPath == null || _currentPath.Count == 0)
-                    {
-                        Debug.LogError("No se pudo recalcular el camino.");
-                        _isMoving = false;
-                        yield break;
-                    }
-                    break;
-                }
-
-                yield return null;
-            }
-
-            _currentPathIndex++;
-        }
-
-        Debug.Log("El agente llegó a su destino.");
-        _isMoving = false;
     }
     private void AgentSelected()
     {
