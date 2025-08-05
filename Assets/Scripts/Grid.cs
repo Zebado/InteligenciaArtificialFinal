@@ -11,16 +11,18 @@ public class Grid : MonoBehaviour
     [SerializeField] float _offset;
     [SerializeField] GameObject _nodePrefab;
 
+    public int Width => _width;
+    public int Height => _height;
     void Start()
     {
-        _grid = new GameObject[_width, _height]; //creo mi grilla del tamaño que asigne a las variables
+        _grid = new GameObject[_width, _height];
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
             {
                 GameObject newNode = Instantiate(_nodePrefab, transform);
                 newNode.GetComponent<Node>().Initialize(x, y, new Vector3(x + x * _offset, 0, y + y * _offset), this);
-                _grid[x, y] = newNode; //asigno cada nodo en cada espacio de mi grilla 
+                _grid[x, y] = newNode;
             }
         }
     }
@@ -29,6 +31,29 @@ public class Grid : MonoBehaviour
     {
         if (x < 0 || x >= _width || y < 0 || y >= _height) return null;
         return _grid[x, y].GetComponent<Node>();
+    }
+    public Node GetClosestNodeTo(Vector3 position)
+    {
+        Node closestNode = null;
+        float minDistance = float.MaxValue;
+
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                Node node = _grid[x, y].GetComponent<Node>();
+                if (node == null || node.isBlocked) continue;
+
+                float dist = Vector3.Distance(position, node.transform.position);
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    closestNode = node;
+                }
+            }
+        }
+
+        return closestNode;
     }
 }
 

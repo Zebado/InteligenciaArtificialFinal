@@ -112,10 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa97de49bbdb25746a5abb81d072427e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 1
+  _maxSpeed: 3
   _maxForce: 0.1
   _faction: 0
-  _followDistance: 5
+  _followDistance: 3
 --- !u!114 &6941861561084958692
 MonoBehaviour:
   m_ObjectHideFlags: 0

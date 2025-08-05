@@ -46,33 +46,17 @@ public class Node : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GameManager.Instance.SetStartingNode(this);
+            GameManager.Instance.SetGoalNode(this, true);
+            GameManager.Instance.UpdatePlayerPath();
         }
-        if (Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonDown(1))
         {
-            GameManager.Instance.SetGoalNode(this);
+            GameManager.Instance.SetGoalNode(this, false);
         }
         if (Input.GetMouseButtonDown(2))
         {
             isBlocked = !isBlocked;
-            //if (isBlocked)
-            //{
-            //    GameManagerPathFinding.Instance.PaintGameObject(gameObject, Color.grey);
-            //}
-            //else
-            //    GameManagerPathFinding.Instance.PaintGameObject(gameObject, Color.white);
-
-            GameManager.Instance.PaintGameObject(gameObject, isBlocked ? Color.grey : Color.white);
-
             gameObject.layer = isBlocked ? 7 : 0;
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            SetCost(cost + 1);
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            SetCost(cost - 1);
         }
     }
     public void SetCost(float newCost)

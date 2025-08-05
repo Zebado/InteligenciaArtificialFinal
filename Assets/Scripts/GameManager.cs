@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Node _startingNode;
     public Node _goalNode;
     public static GameManager Instance;
-    public Player player;
+    public Player playerBlue;
+    public Player playerRed;
     public PathFinding pf;
+    public Grid grid;
 
     public LayerMask wallMask;
 
@@ -17,30 +18,45 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(this);
     }
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            player.SetPath(pf.ThetaStar(_startingNode, _goalNode));
-        }
-    }
-    public void SetStartingNode(Node node)
-    {
-        if (_startingNode != null) PaintGameObject(_startingNode.gameObject, Color.white);
-        _startingNode = node;
-        PaintGameObject(_startingNode.gameObject, Color.green);
-        Vector3 nodePos = _startingNode.transform.position;
-        player.SetPos(new Vector3(nodePos.x, nodePos.y, nodePos.z));
-    }
-    public void SetGoalNode(Node node)
-    {
-        if (_goalNode != null) PaintGameObject(_goalNode.gameObject, Color.white);
-        _goalNode = node;
-        PaintGameObject(_goalNode.gameObject, Color.red);
+        StartCoroutine(InitAfterGridReady());
     }
 
-    public void PaintGameObject(GameObject obj, Color color)
+    public void SetGoalNode(Node node, bool isLeftClick)
     {
-        obj.GetComponent<Renderer>().material.color = color;
+        _goalNode = node;
+        if (isLeftClick)
+            UpdatePlayerPath(playerBlue);
+        else
+            UpdatePlayerPath(playerRed);
+    }
+    public void UpdatePlayerPath(Player player)
+    {
+        Node start = player.GetCurrentNode();
+        if (_goalNode == null || start == null) return;
+
+        List<Node> path = pf.ThetaStar(start, _goalNode);
+        player.SetPath(path);
+    }
+    private IEnumerator InitAfterGridReady()
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (grid == null)
+            grid = FindObjectOfType<Grid>();
+
+        if (playerBlue == null)
+            playerBlue = FindObjectOfType<Player>();
+
+        _goalNode = null;
+    }
+    public void UpdatePlayerPath()
+    {
+        Node start = playerBlue.GetCurrentNode();
+        if (_goalNode == null || start == null) return;
+
+        List<Node> path = pf.ThetaStar(start, _goalNode);
+        playerBlue.SetPath(path);
     }
 }

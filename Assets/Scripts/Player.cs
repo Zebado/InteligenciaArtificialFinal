@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public float speed;
     List<Node> _path;
+    public Grid grid;
 
     public void SetPath(List<Node> path)
     {
@@ -18,7 +19,14 @@ public class Player : MonoBehaviour
         pos.y = 1;
         transform.position = pos;
     }
-
+    private void Awake()
+    {
+        grid = FindObjectOfType<Grid>();
+    }
+    public Node GetCurrentNode()
+    {
+        return grid.GetClosestNodeTo(transform.position);
+    }
     private void Update()
     {
         if (_path != null && _path.Count > 0)
@@ -32,6 +40,10 @@ public class Player : MonoBehaviour
             }
 
             transform.position += dir.normalized * speed * Time.deltaTime;
+
+            Vector3 fixedPos = transform.position;
+            fixedPos.y = 1f;
+            transform.position = fixedPos;
         }
     }
 }

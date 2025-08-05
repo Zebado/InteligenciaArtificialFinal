@@ -34,7 +34,9 @@ public class Boid : MonoBehaviour
         else
             _velocity = Vector3.zero;
         }
-        transform.position += _velocity * Time.deltaTime;
+        Vector3 move = _velocity * Time.deltaTime;
+        move.y = 0;
+        transform.position += move;
         if (_velocity != Vector3.zero)
         {
             transform.forward = _velocity;
