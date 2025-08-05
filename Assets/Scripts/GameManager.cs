@@ -31,14 +31,6 @@ public class GameManager : MonoBehaviour
         else
             UpdatePlayerPath(playerRed);
     }
-    public void UpdatePlayerPath(Player player)
-    {
-        Node start = player.GetCurrentNode();
-        if (_goalNode == null || start == null) return;
-
-        List<Node> path = pf.ThetaStar(start, _goalNode);
-        player.SetPath(path);
-    }
     private IEnumerator InitAfterGridReady()
     {
         yield return new WaitForEndOfFrame();
@@ -51,12 +43,25 @@ public class GameManager : MonoBehaviour
 
         _goalNode = null;
     }
-    public void UpdatePlayerPath()
+    public void UpdatePlayerPath(Player player)
     {
-        Node start = playerBlue.GetCurrentNode();
+        Node start = player.GetCurrentNode();
         if (_goalNode == null || start == null) return;
 
-        List<Node> path = pf.ThetaStar(start, _goalNode);
-        playerBlue.SetPath(path);
+        bool hasLOS = pf.InSight(start.transform.position, _goalNode.transform.position);
+
+#if UNITY_EDITOR
+        Debug.DrawLine(start.transform.position, _goalNode.transform.position, hasLOS ? Color.green : Color.red, 2f);
+#endif
+
+        if (hasLOS)
+        {
+            player.SetPath(new List<Node> { _goalNode });
+        }
+        else
+        {
+            List<Node> path = pf.ThetaStar(start, _goalNode);
+            player.SetPath(path);
+        }
     }
 }

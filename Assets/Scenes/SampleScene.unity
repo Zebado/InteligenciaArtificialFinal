@@ -760,6 +760,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Blue (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -833,6 +837,10 @@ PrefabInstance:
     - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_Name
       value: NPC Blue (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_RootOrder
@@ -1326,7 +1334,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1030424727}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1846,18 +1854,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.3612
-      objectReference: {fileID: 0}
-    - target: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 8.983939
-      objectReference: {fileID: 0}
-    - target: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 157.33136
-      objectReference: {fileID: 0}
-    - target: {fileID: 3072544016201541511, guid: bb941636da39f0a4693cc511561b038d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -76.2
       objectReference: {fileID: 0}
@@ -1901,10 +1897,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
-    - target: {fileID: 8474988159064451135, guid: bb941636da39f0a4693cc511561b038d, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 4a905583e5a94ca4f89a9199fc64b5b1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb941636da39f0a4693cc511561b038d, type: 3}
 --- !u!1 &1524392745
@@ -2376,6 +2368,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Blue (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -2625,6 +2621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC Blue (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2821,6 +2821,10 @@ PrefabInstance:
     - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_Name
       value: NPC Blue (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2709336466058230856, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2709336466058230863, guid: db999381a3140b248a6a2743f8a19f42, type: 3}
       propertyPath: m_RootOrder

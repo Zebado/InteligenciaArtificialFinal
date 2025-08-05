@@ -47,7 +47,6 @@ public class Node : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             GameManager.Instance.SetGoalNode(this, true);
-            GameManager.Instance.UpdatePlayerPath();
         }
         else if (Input.GetMouseButtonDown(1))
         {

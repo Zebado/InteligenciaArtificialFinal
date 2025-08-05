@@ -87,8 +87,21 @@ public class PathFinding : MonoBehaviour
     }
     public bool InSight(Vector3 a, Vector3 b)
     {
-        return !Physics.Raycast(a, b - a, Vector3.Distance(a, b), GameManager.Instance.wallMask);
+        a.y += 1.0f;
+        b.y += 1.0f;
+
+        Vector3 dir = b - a;
+        float dist = dir.magnitude;
+
+        bool hit = Physics.Raycast(a, dir.normalized, dist, GameManager.Instance.wallMask);
+
+#if UNITY_EDITOR
+        Debug.DrawLine(a, b, hit ? Color.red : Color.green, 2f);
+#endif
+
+        return !hit;
     }
+
     public float HeuristicDistance(Vector3 a, Vector3 b)
     {
         Vector3 distance = b - a;
