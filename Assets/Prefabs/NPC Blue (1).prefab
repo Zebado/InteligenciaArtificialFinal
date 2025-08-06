@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2709336466058230861}
   - component: {fileID: 2709336466058230862}
   - component: {fileID: 1734471789844249368}
+  - component: {fileID: 8539081945095273590}
   - component: {fileID: 7419122007497014736}
   m_Layer: 0
   m_Name: NPC Blue (1)
@@ -116,6 +117,23 @@ MonoBehaviour:
   _maxForce: 0.1
   _faction: 1
   _followDistance: 3
+--- !u!114 &8539081945095273590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2709336466058230856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0105f604c2d694749a178312a0cffdeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  leader: {fileID: 0}
+  targetEnemy: {fileID: 0}
+  viewAngle: 90
+  viewDistance: 10
 --- !u!114 &7419122007497014736
 MonoBehaviour:
   m_ObjectHideFlags: 0

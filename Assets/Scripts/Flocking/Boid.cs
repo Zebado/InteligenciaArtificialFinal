@@ -21,8 +21,6 @@ public class Boid : MonoBehaviour
 
         _leader = _faction == Faction.Blue ? BoidManager.Instance.LeaderBlue : BoidManager.Instance.LeaderRed;
         _los = GetComponent<LOS>();
-        //Vector3 random = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
-        //AddForce(random.normalized * _maxSpeed);
     }
 
     void Update()
@@ -53,21 +51,17 @@ public class Boid : MonoBehaviour
     Vector3 Separation()
     {
 
-        //Variable donde vamos a recolectar todas las direcciones entre los flockmates
         Vector3 desired = Vector3.zero;
 
-        //Por cada boid
         foreach (Boid boid in BoidManager.Instance.AllBoids)
         {
-            //Si soy este boid a chequear, ignoro y sigo la iteracion
             if (boid == this) continue;
 
-            //Saco la direccion hacia el boid
             Vector3 dirToBoid = boid.transform.position - transform.position;
 
             if (dirToBoid.sqrMagnitude <= BoidManager.Instance.ViewRadius)
             {
-                desired -= dirToBoid / dirToBoid.sqrMagnitude; // Inverse distance factor
+                desired -= dirToBoid / dirToBoid.sqrMagnitude;
             }
         }
 
@@ -78,35 +72,26 @@ public class Boid : MonoBehaviour
 
     Vector3 Alignment()
     {
-        //Variable donde vamos a recolectar todas las direcciones entre los flockmates
         Vector3 desired = Vector3.zero;
 
-        //Contador para acumular cantidad de boids a promediar
         int count = 0;
 
-        //Por cada boid
         foreach (Boid boid in BoidManager.Instance.AllBoids)
         {
-            //Si soy este boid a chequear, ignoro y sigo la iteracion
             if (boid == this) continue;
 
-            //Saco la direccion hacia el boid
             Vector3 dirToBoid = boid.transform.position - transform.position;
 
-            //Si esta dentro del rango de vision
             if (dirToBoid.sqrMagnitude <= BoidManager.Instance.ViewRadius)
             {
-                //Sumo la direccion hacia donde esta yendo el boid
                 desired += boid._velocity;
 
-                //Sumo uno mas a mi contador para promediar
                 count++;
             }
         }
 
         if (count == 0) return desired;
 
-        //Promediamos todas las direcciones
         desired /= count;
 
         return CalculateSteering(desired);
@@ -114,10 +99,8 @@ public class Boid : MonoBehaviour
 
     Vector3 Cohesion()
     {
-        //Variable donde vamos a recolectar todas las direcciones entre los flockmates
         Vector3 desired = Vector3.zero;
 
-        //Contador para acumular cantidad de boids a promediar
         int count = 0;
 
         if (_leader != null)
@@ -127,19 +110,14 @@ public class Boid : MonoBehaviour
         }
         foreach (Boid boid in BoidManager.Instance.AllBoids)
         {
-            //Si soy este boid a chequear, ignoro y sigo la iteracion
             if (boid == this) continue;
 
-            //Saco la direccion hacia el boid
             Vector3 dirToBoid = boid.transform.position - transform.position;
 
-            //Si esta dentro del rango de vision
             if (dirToBoid.sqrMagnitude <= BoidManager.Instance.ViewRadius)
             {
-                //Sumo la posicion de cada boid
                 desired += boid.transform.position;
 
-                //Sumo uno mas a mi contador para promediar
                 count++;
             }
         }

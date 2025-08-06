@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(InitAfterGridReady());
+        AssignEnemyLists();
     }
 
     public void SetGoalNode(Node node, bool isLeftClick)
@@ -50,10 +51,7 @@ public class GameManager : MonoBehaviour
 
         bool hasLOS = pf.InSight(start.transform.position, _goalNode.transform.position);
 
-#if UNITY_EDITOR
         Debug.DrawLine(start.transform.position, _goalNode.transform.position, hasLOS ? Color.green : Color.red, 2f);
-#endif
-
         if (hasLOS)
         {
             player.SetPath(new List<Node> { _goalNode });
@@ -62,6 +60,26 @@ public class GameManager : MonoBehaviour
         {
             List<Node> path = pf.ThetaStar(start, _goalNode);
             player.SetPath(path);
+        }
+    }
+    public void AssignEnemyLists()
+    {
+        NPC[] allNpcs = FindObjectsOfType<NPC>();
+
+        foreach (var npc in allNpcs)
+        {
+            npc.allEnemies = new List<NPC>();
+
+            foreach (var other in allNpcs)
+            {
+                if (other == npc) continue;
+
+                if (npc.CompareTag("Blue") && other.CompareTag("Red") ||
+                    npc.CompareTag("Red") && other.CompareTag("Blue"))
+                {
+                    npc.allEnemies.Add(other);
+                }
+            }
         }
     }
 }

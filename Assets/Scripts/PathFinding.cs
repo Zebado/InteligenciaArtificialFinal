@@ -93,13 +93,13 @@ public class PathFinding : MonoBehaviour
         Vector3 dir = b - a;
         float dist = dir.magnitude;
 
-        bool hit = Physics.Raycast(a, dir.normalized, dist, GameManager.Instance.wallMask);
+        bool blocked = Physics.Raycast(a, dir.normalized, dist, GameManager.Instance.wallMask);
 
 #if UNITY_EDITOR
-        Debug.DrawLine(a, b, hit ? Color.red : Color.green, 2f);
+        Debug.DrawLine(a, b, blocked ? Color.red : Color.green, 2f);
 #endif
 
-        return !hit;
+        return !blocked;
     }
 
     public float HeuristicDistance(Vector3 a, Vector3 b)

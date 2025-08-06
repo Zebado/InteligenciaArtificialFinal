@@ -6,13 +6,16 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
     GameObject[,] _grid;
+
     [SerializeField] int _width;
     [SerializeField] int _height;
     [SerializeField] float _offset;
     [SerializeField] GameObject _nodePrefab;
+    [SerializeField] LayerMask wallMask;
 
     public int Width => _width;
     public int Height => _height;
+
     void Start()
     {
         _grid = new GameObject[_width, _height];
@@ -20,8 +23,21 @@ public class Grid : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                GameObject newNode = Instantiate(_nodePrefab, transform);
-                newNode.GetComponent<Node>().Initialize(x, y, new Vector3(x + x * _offset, 0, y + y * _offset), this);
+                Vector3 worldPos = new Vector3(x + x * _offset, 0, y + y * _offset);
+
+                GameObject newNode = Instantiate(_nodePrefab, worldPos, Quaternion.identity, transform);
+
+                bool isBlocked = Physics.CheckSphere(worldPos + Vector3.up * 0.5f, 0.4f, wallMask); // podés ajustar radio/altura
+
+                Node node = newNode.GetComponent<Node>();
+                node.Initialize(x, y, worldPos, this);
+                node.isBlocked = isBlocked;
+
+#if UNITY_EDITOR
+                if (isBlocked)
+                    Debug.DrawRay(worldPos, Vector3.up * 2f, Color.red, 10f);
+#endif
+
                 _grid[x, y] = newNode;
             }
         }
@@ -32,6 +48,7 @@ public class Grid : MonoBehaviour
         if (x < 0 || x >= _width || y < 0 || y >= _height) return null;
         return _grid[x, y].GetComponent<Node>();
     }
+
     public Node GetClosestNodeTo(Vector3 position)
     {
         Node closestNode = null;
