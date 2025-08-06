@@ -49,14 +49,35 @@ public class NPC : MonoBehaviour
 
         return null;
     }
+    void Shoot()
+    {
+        GameObject bullet = BulletPool.Instance.GetBullet();
+        bullet.transform.position = transform.position + transform.forward * 1f;
+        bullet.transform.forward = transform.forward;
+        bullet.GetComponent<Bullet>().Shoot(transform.forward);
+    }
     public bool IsEnemyInSight()
     {
         currentTarget = FindVisibleEnemy();
         return currentTarget != null;
     }
+    public void TakeDamage(int dmg)
+    {
+        hp -= dmg;
+        Debug.Log($"{gameObject.name} recibió {dmg} de daño. HP restante: {hp}");
 
+        if (hp <= 0)
+        {
+            Die();
+        }
+    }
     public bool IsLowHealth()
     {
         return hp <= 20;
+    }
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} murió.");
+        gameObject.SetActive(false);
     }
 }

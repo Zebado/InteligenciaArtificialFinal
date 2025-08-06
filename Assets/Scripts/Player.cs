@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
 
             transform.position += dir.normalized * speed * Time.deltaTime;
 
+            if (dir != Vector3.zero)
+                transform.forward = dir.normalized;
+
             Vector3 fixedPos = transform.position;
             fixedPos.y = 1f;
             transform.position = fixedPos;
