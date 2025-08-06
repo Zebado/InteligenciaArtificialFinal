@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Faction { Red, Blue }
-public class Boid : MonoBehaviour
+public class Flocking : MonoBehaviour
 {
     Vector3 _velocity;
     [SerializeField] float _maxSpeed;
@@ -53,7 +53,7 @@ public class Boid : MonoBehaviour
 
         Vector3 desired = Vector3.zero;
 
-        foreach (Boid boid in BoidManager.Instance.AllBoids)
+        foreach (Flocking boid in BoidManager.Instance.AllBoids)
         {
             if (boid == this) continue;
 
@@ -76,7 +76,7 @@ public class Boid : MonoBehaviour
 
         int count = 0;
 
-        foreach (Boid boid in BoidManager.Instance.AllBoids)
+        foreach (Flocking boid in BoidManager.Instance.AllBoids)
         {
             if (boid == this) continue;
 
@@ -108,7 +108,7 @@ public class Boid : MonoBehaviour
             desired += _leader.position;
             count++;
         }
-        foreach (Boid boid in BoidManager.Instance.AllBoids)
+        foreach (Flocking boid in BoidManager.Instance.AllBoids)
         {
             if (boid == this) continue;
 

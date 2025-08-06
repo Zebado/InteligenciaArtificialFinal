@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoidManager : MonoBehaviour
 {
     public static BoidManager Instance { get; private set; }
-    public List<Boid> AllBoids { get; private set; }
+    public List<Flocking> AllBoids { get; private set; }
 
     public float ViewRadius
     {
@@ -31,10 +31,10 @@ public class BoidManager : MonoBehaviour
             return;
         }
         Instance = this;
-        AllBoids = new List<Boid>();
+        AllBoids = new List<Flocking>();
     }
 
-    public void RegisterNewBoid(Boid newBoid)
+    public void RegisterNewBoid(Flocking newBoid)
     {
         if (!AllBoids.Contains(newBoid))
             AllBoids.Add(newBoid);

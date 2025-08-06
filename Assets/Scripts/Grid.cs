@@ -32,12 +32,8 @@ public class Grid : MonoBehaviour
                 Node node = newNode.GetComponent<Node>();
                 node.Initialize(x, y, worldPos, this);
                 node.isBlocked = isBlocked;
-
-#if UNITY_EDITOR
                 if (isBlocked)
                     Debug.DrawRay(worldPos, Vector3.up * 2f, Color.red, 10f);
-#endif
-
                 _grid[x, y] = newNode;
             }
         }

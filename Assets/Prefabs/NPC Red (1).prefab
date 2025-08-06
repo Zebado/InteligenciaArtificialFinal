@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1052215550178457750}
   - component: {fileID: 1052215550178457745}
   - component: {fileID: 1052215550178457744}
-  - component: {fileID: 4743113360539838847}
+  - component: {fileID: 6091384857479926648}
   - component: {fileID: 2716768981668746526}
   - component: {fileID: 6941861561084958692}
   m_Layer: 0
@@ -102,7 +102,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4743113360539838847
+--- !u!114 &6091384857479926648
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,11 +111,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1052215550178457746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa97de49bbdb25746a5abb81d072427e, type: 3}
+  m_Script: {fileID: 11500000, guid: 01cfc7fc012cdee47b2263c452228170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 2
-  _maxForce: 0.1
+  _maxForce: 0.01
   _faction: 0
   _followDistance: 1.5
 --- !u!114 &2716768981668746526
@@ -137,6 +137,9 @@ MonoBehaviour:
   viewAngle: 90
   viewDistance: 5
   healingZone: {fileID: 0}
+  currentPath: []
+  currentIndex: 0
+  moveSpeed: 3
   boid: {fileID: 0}
 --- !u!114 &6941861561084958692
 MonoBehaviour:

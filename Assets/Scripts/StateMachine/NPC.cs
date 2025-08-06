@@ -12,11 +12,15 @@ public class NPC : MonoBehaviour
     public float viewDistance = 10f;
     public Transform healingZone;
 
-    [HideInInspector] public Boid boid;
+    public List<Node> currentPath;
+    public int currentIndex;
+    public float moveSpeed = 3f;
+
+    [HideInInspector] public Flocking boid;
     private StateMachine fsm;
     private void Awake()
     {
-        boid = GetComponent<Boid>();
+        boid = GetComponent<Flocking>();
     }
     void Start()
     {
@@ -68,6 +72,15 @@ public class NPC : MonoBehaviour
     {
         currentTarget = FindVisibleEnemy();
         return currentTarget != null;
+    }
+    public bool HasLineOfSightTo(Vector3 target)
+    {
+        Vector3 from = transform.position + Vector3.up;
+        Vector3 to = target + Vector3.up;
+        Vector3 dir = to - from;
+        float dist = dir.magnitude;
+
+        return !Physics.Raycast(from, dir.normalized, dist, GameManager.Instance.wallMask);
     }
     public void TakeDamage(int dmg)
     {
