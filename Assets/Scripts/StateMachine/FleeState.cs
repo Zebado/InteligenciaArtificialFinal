@@ -23,11 +23,12 @@ public class FleeState : State
 
     public void OnUpdate()
     {
-        if (npc.currentTarget != null)
+        if (npc.healingZone != null)
         {
-            Vector3 dir = npc.transform.position - npc.currentTarget.transform.position;
+            Vector3 dir = npc.healingZone.position - npc.transform.position;
             npc.transform.position += dir.normalized * Time.deltaTime * 2.5f;
         }
+
 
         if (Time.time - startTime > fleeDuration)
         {

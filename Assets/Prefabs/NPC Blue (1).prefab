@@ -114,10 +114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa97de49bbdb25746a5abb81d072427e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 3
+  _maxSpeed: 2
   _maxForce: 0.1
   _faction: 1
-  _followDistance: 3
+  _followDistance: 1.5
 --- !u!114 &8539081945095273590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +135,8 @@ MonoBehaviour:
   allEnemies: []
   currentTarget: {fileID: 0}
   viewAngle: 90
-  viewDistance: 10
+  viewDistance: 5
+  healingZone: {fileID: 0}
   boid: {fileID: 0}
 --- !u!114 &7419122007497014736
 MonoBehaviour:

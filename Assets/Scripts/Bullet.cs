@@ -36,7 +36,6 @@ public class Bullet : MonoBehaviour
         {
             target.TakeDamage(damage);
         }
-
         gameObject.SetActive(false);
     }
 }

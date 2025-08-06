@@ -10,18 +10,26 @@ public class NPC : MonoBehaviour
     public NPC currentTarget;
     public float viewAngle = 90f;
     public float viewDistance = 10f;
+    public Transform healingZone;
 
     [HideInInspector] public Boid boid;
     private StateMachine fsm;
     private void Awake()
     {
-        boid= GetComponent<Boid>(); 
+        boid = GetComponent<Boid>();
     }
     void Start()
     {
         fsm = new StateMachine();
 
         fsm.SetState(new FollowState(this, fsm));
+        if (healingZone == null)
+        {
+            if (CompareTag("Blue"))
+                healingZone = GameObject.Find("HealingTeamBlue").transform;
+            else if (CompareTag("Red"))
+                healingZone = GameObject.Find("HealingTeamRed").transform;
+        }
     }
 
     void Update()
@@ -49,7 +57,7 @@ public class NPC : MonoBehaviour
 
         return null;
     }
-    void Shoot()
+    public void Shoot()
     {
         GameObject bullet = BulletPool.Instance.GetBullet();
         bullet.transform.position = transform.position + transform.forward * 1f;
@@ -64,11 +72,14 @@ public class NPC : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         hp -= dmg;
-        Debug.Log($"{gameObject.name} recibió {dmg} de daño. HP restante: {hp}");
-
         if (hp <= 0)
         {
             Die();
+            return;
+        }
+        if (IsLowHealth() && fsm.CurrentState is not FleeState)
+        {
+            fsm.SetState(new FleeState(this, fsm));
         }
     }
     public bool IsLowHealth()
@@ -77,7 +88,6 @@ public class NPC : MonoBehaviour
     }
     private void Die()
     {
-        Debug.Log($"{gameObject.name} murió.");
         gameObject.SetActive(false);
     }
 }

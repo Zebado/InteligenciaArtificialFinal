@@ -30,23 +30,20 @@ public class AttackState : State
         }
 
         Vector3 dir = npc.currentTarget.transform.position - npc.transform.position;
-        float distance = dir.magnitude;
 
-        if (distance > 1.5f)
+        if (dir != Vector3.zero)
         {
-            npc.transform.position += dir.normalized * Time.deltaTime * 2f;
-        }
-        else
-        {
-            if (Time.time - lastAttackTime >= attackCooldown)
-            {
-                Debug.Log("NPC ataca al enemigo");
-                lastAttackTime = Time.time;
-
-            }
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            npc.transform.rotation = Quaternion.Lerp(npc.transform.rotation, targetRot, Time.deltaTime * 10f);
         }
 
-        if (npc.IsLowHealth())
+        if (Time.time - lastAttackTime >= attackCooldown)
+        {
+            lastAttackTime = Time.time;
+            npc.Shoot();
+        }
+
+        if (npc.IsLowHealth() && fsm.CurrentState is not FleeState)
         {
             fsm.SetState(new FleeState(npc, fsm));
         }
@@ -55,7 +52,6 @@ public class AttackState : State
             fsm.SetState(new FollowState(npc, fsm));
         }
     }
-
     public void OnExit()
     {
         Debug.Log("NPC sale de estado ATTACK");

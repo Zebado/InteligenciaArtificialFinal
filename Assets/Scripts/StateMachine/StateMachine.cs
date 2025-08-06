@@ -1,27 +1,27 @@
 
 public class StateMachine
 {
-    private State _currentState;
+    public State CurrentState {  get; private set; }
 
     public void SetState(State newState)
     {
-        if (_currentState != null)
-            _currentState.OnExit();
+        if (CurrentState != null)
+            CurrentState.OnExit();
 
-        _currentState = newState;
+        CurrentState = newState;
 
-        if (_currentState != null)
-            _currentState.OnEnter();
+        if (CurrentState != null)
+            CurrentState.OnEnter();
     }
 
     public void Update()
     {
-        if (_currentState != null)
-            _currentState.OnUpdate();
+        if (CurrentState != null)
+            CurrentState.OnUpdate();
     }
 
     public State GetCurrentState()
     {
-        return _currentState;
+        return CurrentState;
     }
 }

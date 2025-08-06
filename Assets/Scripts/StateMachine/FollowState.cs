@@ -25,7 +25,7 @@ public class FollowState : State
 
     public void OnUpdate()
     {
-        if (npc.IsLowHealth())
+        if (npc.IsLowHealth() && fsm.CurrentState is not FleeState)
         {
             fsm.SetState(new FleeState(npc, fsm));
         }
