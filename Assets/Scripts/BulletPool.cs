@@ -33,7 +33,6 @@ public class BulletPool : MonoBehaviour
                 return bullet;
         }
 
-        // Si no hay disponibles, opcionalmente crear más
         GameObject newBullet = Instantiate(bulletPrefab);
         newBullet.SetActive(false);
         bullets.Add(newBullet);

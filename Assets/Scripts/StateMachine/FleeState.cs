@@ -26,9 +26,16 @@ public class FleeState : State
         if (npc.healingZone != null)
         {
             Vector3 dir = npc.healingZone.position - npc.transform.position;
-            npc.transform.position += dir.normalized * Time.deltaTime * 2.5f;
-        }
+            Vector3 moveDir = dir.normalized;
 
+            npc.transform.position += moveDir * Time.deltaTime * 2.5f;
+
+            if (moveDir != Vector3.zero)
+            {
+                Quaternion lookRot = Quaternion.LookRotation(moveDir);
+                npc.transform.rotation = Quaternion.Lerp(npc.transform.rotation, lookRot, Time.deltaTime * 10f);
+            }
+        }
 
         if (Time.time - startTime > fleeDuration)
         {

@@ -29,11 +29,12 @@ public class AttackState : State
             return;
         }
 
-        Vector3 dir = npc.currentTarget.transform.position - npc.transform.position;
+        Vector3 flatDir = npc.currentTarget.transform.position - npc.transform.position;
+        flatDir.y = 0f;
 
-        if (dir != Vector3.zero)
+        if (flatDir != Vector3.zero)
         {
-            Quaternion targetRot = Quaternion.LookRotation(dir);
+            Quaternion targetRot = Quaternion.LookRotation(flatDir);
             npc.transform.rotation = Quaternion.Lerp(npc.transform.rotation, targetRot, Time.deltaTime * 10f);
         }
 

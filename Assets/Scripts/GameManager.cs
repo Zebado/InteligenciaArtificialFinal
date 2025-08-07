@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
 
         bool hasLOS = pf.InSight(start.transform.position, _goalNode.transform.position);
 
-        Debug.DrawLine(start.transform.position, _goalNode.transform.position, hasLOS ? Color.green : Color.red, 2f);
         if (hasLOS)
         {
             player.SetPath(new List<Node> { _goalNode });

@@ -52,23 +52,9 @@ public class Node : MonoBehaviour
         {
             GameManager.Instance.SetGoalNode(this, false);
         }
-        if (Input.GetMouseButtonDown(2))
-        {
-            isBlocked = !isBlocked;
-            gameObject.layer = isBlocked ? 7 : 0;
-        }
     }
     public void SetCost(float newCost)
     {
         cost = Mathf.Clamp(newCost, 1, 99);
-    }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.black;
-
-        foreach (Node node in GetNeighbors())
-        {
-            Gizmos.DrawLine(transform.position, node.transform.position);
-        }
     }
 }

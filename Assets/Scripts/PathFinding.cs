@@ -87,18 +87,13 @@ public class PathFinding : MonoBehaviour
     }
     public bool InSight(Vector3 a, Vector3 b)
     {
-        a.y += 1.0f;
-        b.y += 1.0f;
+        a.y += 0.5f; 
+        b.y += 0.5f;
 
         Vector3 dir = b - a;
         float dist = dir.magnitude;
 
         bool blocked = Physics.Raycast(a, dir.normalized, dist, GameManager.Instance.wallMask);
-
-#if UNITY_EDITOR
-        Debug.DrawLine(a, b, blocked ? Color.red : Color.green, 2f);
-#endif
-
         return !blocked;
     }
 

@@ -27,13 +27,11 @@ public class Grid : MonoBehaviour
 
                 GameObject newNode = Instantiate(_nodePrefab, worldPos, Quaternion.identity, transform);
 
-                bool isBlocked = Physics.CheckSphere(worldPos + Vector3.up * 0.5f, 0.4f, wallMask); // podés ajustar radio/altura
+                bool isBlocked = Physics.CheckSphere(worldPos + Vector3.up * 0.5f, 0.4f, wallMask);
 
                 Node node = newNode.GetComponent<Node>();
                 node.Initialize(x, y, worldPos, this);
                 node.isBlocked = isBlocked;
-                if (isBlocked)
-                    Debug.DrawRay(worldPos, Vector3.up * 2f, Color.red, 10f);
                 _grid[x, y] = newNode;
             }
         }
@@ -65,7 +63,6 @@ public class Grid : MonoBehaviour
                 }
             }
         }
-
         return closestNode;
     }
 }

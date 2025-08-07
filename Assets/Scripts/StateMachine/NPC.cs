@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    public float hp = 100;
+    public float hp = 100f;
     public Transform leader;
     public List<NPC> allEnemies;
     public NPC currentTarget;
@@ -17,22 +17,23 @@ public class NPC : MonoBehaviour
     public float moveSpeed = 3f;
 
     [HideInInspector] public Flocking boid;
+    private LOS los;
     private StateMachine fsm;
-    private void Awake()
+
+    void Awake()
     {
         boid = GetComponent<Flocking>();
+        los = GetComponent<LOS>();
     }
+
     void Start()
     {
         fsm = new StateMachine();
-
         fsm.SetState(new FollowState(this, fsm));
+
         if (healingZone == null)
         {
-            if (CompareTag("Blue"))
-                healingZone = GameObject.Find("HealingTeamBlue").transform;
-            else if (CompareTag("Red"))
-                healingZone = GameObject.Find("HealingTeamRed").transform;
+            healingZone = GameObject.Find(CompareTag("Blue") ? "HealingTeamBlue" : "HealingTeamRed").transform;
         }
     }
 
@@ -40,6 +41,7 @@ public class NPC : MonoBehaviour
     {
         fsm.Update();
     }
+
     public NPC FindVisibleEnemy()
     {
         foreach (var enemy in allEnemies)
@@ -52,7 +54,7 @@ public class NPC : MonoBehaviour
 
             if (angle < viewAngle / 2f && distance < viewDistance)
             {
-                if (!Physics.Raycast(transform.position + Vector3.up, dir, distance, GameManager.Instance.wallMask))
+                if (los.HasLineOfSight(enemy.transform.position))
                 {
                     return enemy;
                 }
@@ -61,6 +63,7 @@ public class NPC : MonoBehaviour
 
         return null;
     }
+
     public void Shoot()
     {
         GameObject bullet = BulletPool.Instance.GetBullet();
@@ -68,20 +71,18 @@ public class NPC : MonoBehaviour
         bullet.transform.forward = transform.forward;
         bullet.GetComponent<Bullet>().Shoot(transform.forward);
     }
+
     public bool IsEnemyInSight()
     {
         currentTarget = FindVisibleEnemy();
         return currentTarget != null;
     }
+
     public bool HasLineOfSightTo(Vector3 target)
     {
-        Vector3 from = transform.position + Vector3.up;
-        Vector3 to = target + Vector3.up;
-        Vector3 dir = to - from;
-        float dist = dir.magnitude;
-
-        return !Physics.Raycast(from, dir.normalized, dist, GameManager.Instance.wallMask);
+        return los.HasLineOfSight(target);
     }
+
     public void TakeDamage(int dmg)
     {
         hp -= dmg;
@@ -90,15 +91,18 @@ public class NPC : MonoBehaviour
             Die();
             return;
         }
+
         if (IsLowHealth() && fsm.CurrentState is not FleeState)
         {
             fsm.SetState(new FleeState(this, fsm));
         }
     }
+
     public bool IsLowHealth()
     {
         return hp <= 20;
     }
+
     private void Die()
     {
         gameObject.SetActive(false);
