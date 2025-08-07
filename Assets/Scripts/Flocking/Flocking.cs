@@ -12,6 +12,7 @@ public class Flocking : MonoBehaviour
 
     [SerializeField] private Faction _faction;
     public Faction FactionType => _faction;
+    public float FollowDistance => _followDistance;
 
     Transform _leader;
     [SerializeField] float _followDistance = 5f;
@@ -29,26 +30,38 @@ public class Flocking : MonoBehaviour
     {
         if (_leader == null) return;
 
-        if (_los.HasLineOfSight(_leader.position))
+        bool enemyInSight = false;
+
+        NPC npc = GetComponent<NPC>();
+        if (npc != null)
+            enemyInSight = npc.IsEnemyInSight();
+
+        float distToLeader = Vector3.Distance(transform.position, _leader.position);
+
+        if (enemyInSight)
         {
-            if (Vector3.Distance(transform.position, _leader.position) > _followDistance)
-            {
-                ApplyFlocking();
-            }
-            else
-            {
-                _velocity = Vector3.zero;
-            }
+            Vector3 dir = (npc.currentTarget.transform.position - transform.position).normalized;
+            dir.y = 0;
+            if (dir != Vector3.zero)
+                transform.forward = Vector3.Lerp(transform.forward, dir, Time.deltaTime * 10f);
 
-            Vector3 move = _velocity * Time.deltaTime;
-            move.y = 0;
-            transform.position += move;
-
-            if (_velocity != Vector3.zero)
-            {
-                transform.forward = Vector3.Lerp(transform.forward, _velocity.normalized, Time.deltaTime * 10f);
-            }
+            _velocity = Vector3.zero;
         }
+
+        else if (_los.HasLineOfSight(_leader.position))
+        {
+            if (distToLeader > _followDistance)
+                ApplyFlocking();
+            else
+                _velocity = Vector3.zero;
+        }
+
+        Vector3 move = _velocity * Time.deltaTime;
+        move.y = 0;
+        transform.position += move;
+
+        if (_velocity != Vector3.zero)
+            transform.forward = Vector3.Lerp(transform.forward, _velocity.normalized, Time.deltaTime * 10f);
     }
 
     private void ApplyFlocking()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPC : MonoBehaviour
 {
     public float hp = 100f;
-    public Transform leader;
+    public Transform leader;    
     public List<NPC> allEnemies;
     public NPC currentTarget;
     public float viewAngle = 90f;

@@ -23,6 +23,14 @@ public class AttackState : State
 
     public void OnUpdate()
     {
+        if (npc.IsLowHealth())
+        {
+            fsm.SetState(new FleeState(npc, fsm));
+        }
+        else if (Vector3.Distance(npc.transform.position, npc.currentTarget.transform.position) > npc.viewDistance * 1.2f)
+        {
+            fsm.SetState(new FollowState(npc, fsm));
+        }
         if (npc.currentTarget == null)
         {
             fsm.SetState(new FollowState(npc, fsm));
@@ -42,16 +50,7 @@ public class AttackState : State
         {
             lastAttackTime = Time.time;
             npc.Shoot();
-        }
-
-        if (npc.IsLowHealth() && fsm.CurrentState is not FleeState)
-        {
-            fsm.SetState(new FleeState(npc, fsm));
-        }
-        else if (!npc.IsEnemyInSight())
-        {
-            fsm.SetState(new FollowState(npc, fsm));
-        }
+        }      
     }
     public void OnExit()
     {

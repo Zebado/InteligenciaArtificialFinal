@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,23 +31,51 @@ public class FollowState : State
 
     public void OnUpdate()
     {
-        if (npc.IsLowHealth() && fsm.CurrentState is not FleeState)
+        if (npc.IsLowHealth())
         {
             fsm.SetState(new FleeState(npc, fsm));
             return;
         }
-        else if (npc.IsEnemyInSight())
+
+        float distToLeader = Vector3.Distance(npc.transform.position, npc.leader.position);
+
+        if (npc.IsEnemyInSight())
         {
-            fsm.SetState(new AttackState(npc, fsm));
-            return;
+            float followDistance = npc.boid.FollowDistance;
+
+            if (distToLeader <= followDistance)
+            {
+                fsm.SetState(new AttackState(npc, fsm));
+                return;
+            }
+        }
+
+        if (hasLostLOS && npc.HasLineOfSightTo(npc.leader.position))
+        {
+            hasLostLOS = false;
+            isUsingPath = false;
+            npc.currentPath = null;
+            npc.currentIndex = 0;
+
+            float followDistance = npc.boid.FollowDistance;
+            npc.boid.enabled = distToLeader >= followDistance * 1.1f;
         }
 
         if (!hasLostLOS)
         {
             if (npc.HasLineOfSightTo(npc.leader.position))
             {
-                if (npc.boid != null && !npc.boid.enabled)
+                float stopDistance = npc.boid.FollowDistance * 0.9f;
+                float resumeDistance = npc.boid.FollowDistance * 1.1f;
+
+                if (npc.boid.enabled && distToLeader <= stopDistance)
+                {
+                    npc.boid.enabled = false;
+                }
+                else if (!npc.boid.enabled && distToLeader >= resumeDistance)
+                {
                     npc.boid.enabled = true;
+                }
 
                 return;
             }

@@ -135,7 +135,7 @@ MonoBehaviour:
   allEnemies: []
   currentTarget: {fileID: 0}
   viewAngle: 90
-  viewDistance: 5
+  viewDistance: 8
   healingZone: {fileID: 0}
   currentPath: []
   currentIndex: 0
